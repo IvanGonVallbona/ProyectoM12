@@ -10,20 +10,21 @@
                     <a class="nav-link" href="{{ route('classe_list') }}">Classes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href=>Concerts</a>
+                    <a class="nav-link" href=>Campanyes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href=>Artistes</a>
+                    <a class="nav-link" href=>Personatges</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href=>Cercador Avançat</a>
+                    <a class="nav-link" href=>Esdeveniments</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href=>Wiki</a>
+                </li>
+               
             </ul>
             <ul class="navbar-nav">
                 @if (Auth::check())
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('profile.edit') }}">Perfil</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Tancar Sessió</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
