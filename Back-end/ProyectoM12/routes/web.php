@@ -31,7 +31,7 @@ Route::match(['get', 'post'], '/classe/new', [ClasseController::class, 'new'])->
 
 Route::match(['get', 'post'], '/classe/edit/{id}', [ClasseController::class, 'edit'])->name('classe_edit');
 
-Route::get('/classe/delete/{id}', [ClasseController::class, 'delete'])->name('classe_delete');
+Route::delete('/classe/delete/{id}', [ClasseController::class, 'delete'])->name('classe_delete');
 
 
 require __DIR__.'/auth.php';
