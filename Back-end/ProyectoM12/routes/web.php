@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\DefaultController;
+use App\Http\Controllers\CampanyaController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -26,12 +27,16 @@ Route::get('/', [DefaultController::class, 'home'])->name('home');
 
 // CLASSES
 Route::get('/classes/list', [ClasseController::class,'list'])->name('classe_list');
-
 Route::match(['get', 'post'], '/classe/new', [ClasseController::class, 'new'])->name('classe_new');
-
 Route::match(['get', 'post'], '/classe/edit/{id}', [ClasseController::class, 'edit'])->name('classe_edit');
-
 Route::delete('/classe/delete/{id}', [ClasseController::class, 'delete'])->name('classe_delete');
+
+// CAMPANYES
+
+Route::get('/campanyes/list', [CampanyaController::class, 'list'])->name('campanya_list');
+Route::match(['get', 'post'], '/campanya/new', [CampanyaController::class, 'new'])->name('campanya_new');
+Route::match(['get', 'post'], '/campanya/edit/{id}', [CampanyaController::class, 'edit'])->name('campanya_edit');
+Route::delete('/campanya/delete/{id}', [CampanyaController::class, 'delete'])->name('campanya_delete');
 
 
 require __DIR__.'/auth.php';

@@ -10,7 +10,7 @@
                     <a class="nav-link" href="{{ route('classe_list') }}">Classes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href=>Campanyes</a>
+                    <a class="nav-link" href="{{ route('campanya_list') }}">Campanyes</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href=>Personatges</a>
