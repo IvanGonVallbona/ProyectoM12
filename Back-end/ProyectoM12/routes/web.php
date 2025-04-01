@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\DefaultController;
+use App\Http\Controllers\EsdevenimentController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -33,5 +34,9 @@ Route::match(['get', 'post'], '/classe/edit/{id}', [ClasseController::class, 'ed
 
 Route::get('/classe/delete/{id}', [ClasseController::class, 'delete'])->name('classe_delete');
 
+
+// EVENTS
+Route::resource('esdeveniments', EsdevenimentController::class)
+    ->name('index', 'esdeveniments.index');
 
 require __DIR__.'/auth.php';
