@@ -6,6 +6,7 @@ use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\DefaultController;
 use App\Http\Controllers\CampanyaController;
 use App\Http\Controllers\RegistreController;
+use App\Http\Controllers\EsdevenimentController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -46,5 +47,9 @@ Route::get('/registres/list', [RegistreController::class, 'list'])->name('regist
 Route::match(['get', 'post'], '/registre/new', [RegistreController::class, 'new'])->name('registre_new');
 Route::match(['get', 'post'], '/registre/edit/{id}', [RegistreController::class, 'edit'])->name('registre_edit');
 Route::delete('/registre/delete/{id}', [RegistreController::class, 'delete'])->name('registre_delete');
+
+// EVENTS
+Route::resource('esdeveniments', EsdevenimentController::class)
+    ->name('index', 'esdeveniments.index');
 
 require __DIR__.'/auth.php';
