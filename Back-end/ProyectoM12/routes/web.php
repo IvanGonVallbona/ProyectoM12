@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\DefaultController;
 use App\Http\Controllers\CampanyaController;
+use App\Http\Controllers\RegistreController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -38,5 +39,12 @@ Route::match(['get', 'post'], '/campanya/new', [CampanyaController::class, 'new'
 Route::match(['get', 'post'], '/campanya/edit/{id}', [CampanyaController::class, 'edit'])->name('campanya_edit');
 Route::delete('/campanya/delete/{id}', [CampanyaController::class, 'delete'])->name('campanya_delete');
 
+
+// REGISTRE 
+
+Route::get('/registres/list', [RegistreController::class, 'list'])->name('registre_list');
+Route::match(['get', 'post'], '/registre/new', [RegistreController::class, 'new'])->name('registre_new');
+Route::match(['get', 'post'], '/registre/edit/{id}', [RegistreController::class, 'edit'])->name('registre_edit');
+Route::delete('/registre/delete/{id}', [RegistreController::class, 'delete'])->name('registre_delete');
 
 require __DIR__.'/auth.php';

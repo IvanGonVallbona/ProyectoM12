@@ -21,6 +21,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href=>Wiki</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('registre_list') }}">Registre Sessións</a>
+                </li>
                
             </ul>
             <ul class="navbar-nav">
