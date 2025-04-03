@@ -19,7 +19,7 @@
                     <a class="nav-link" href=>Esdeveniments</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href=>Wiki</a>
+                    <a class="nav-link" href="{{ route('manual_list') }} ">Manuals</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('registre_list') }}">Registre Sessións</a>

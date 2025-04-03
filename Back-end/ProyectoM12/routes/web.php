@@ -6,6 +6,7 @@ use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\DefaultController;
 use App\Http\Controllers\CampanyaController;
 use App\Http\Controllers\RegistreController;
+use App\Http\Controllers\ManualController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -46,5 +47,12 @@ Route::get('/registres/list', [RegistreController::class, 'list'])->name('regist
 Route::match(['get', 'post'], '/registre/new', [RegistreController::class, 'new'])->name('registre_new');
 Route::match(['get', 'post'], '/registre/edit/{id}', [RegistreController::class, 'edit'])->name('registre_edit');
 Route::delete('/registre/delete/{id}', [RegistreController::class, 'delete'])->name('registre_delete');
+
+// MANUALS
+
+Route::get('/manuals/list', [ManualController::class, 'list'])->name('manual_list');
+Route::match(['get', 'post'], '/manual/new', [ManualController::class, 'new'])->name('manual_new');
+Route::match(['get', 'post'], '/manual/edit/{id}', [ManualController::class, 'edit'])->name('manual_edit');
+Route::delete('/manual/delete/{id}', [ManualController::class, 'delete'])->name('manual_delete');
 
 require __DIR__.'/auth.php';
