@@ -16,7 +16,7 @@
                     <a class="nav-link" href=>Personatges</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href=>Esdeveniments</a>
+                    <a class="nav-link" href="{{ route('esdeveniments.index') }}">Esdeveniments</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('manual_list') }} ">Manuals</a>
