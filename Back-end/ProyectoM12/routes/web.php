@@ -57,7 +57,7 @@ Route::match(['get', 'post'], '/manual/edit/{id}', [ManualController::class, 'ed
 Route::delete('/manual/delete/{id}', [ManualController::class, 'delete'])->name('manual_delete');
 
 
-// EVENTS
+// ESDEVENIMENTS
 Route::resource('esdeveniments', EsdevenimentController::class)
     ->name('index', 'esdeveniments.index');
 
