@@ -7,6 +7,8 @@ use App\Http\Controllers\DefaultController;
 use App\Http\Controllers\CampanyaController;
 use App\Http\Controllers\RegistreController;
 use App\Http\Controllers\EsdevenimentController;
+use App\Http\Controllers\PersonatgeController;
+use App\Http\Controllers\RazaController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -48,8 +50,18 @@ Route::match(['get', 'post'], '/registre/new', [RegistreController::class, 'new'
 Route::match(['get', 'post'], '/registre/edit/{id}', [RegistreController::class, 'edit'])->name('registre_edit');
 Route::delete('/registre/delete/{id}', [RegistreController::class, 'delete'])->name('registre_delete');
 
-// EVENTS
+// ESDEVENIMENTS
 Route::resource('esdeveniments', EsdevenimentController::class)
     ->name('index', 'esdeveniments.index');
+
+Route::post('/esdeveniments/{esdeveniment}/inscriure-usuari', [EsdevenimentController::class, 'inscriureUsuario'])->name('esdeveniments.inscriureUsuario');
+Route::post('/esdeveniments/{esdeveniment}/inscriure-personatge', [EsdevenimentController::class, 'inscriurePersonatge'])->name('esdeveniments.inscriurePersonatge');
+
+// PERSONATGES
+Route::resource('personatges', PersonatgeController::class)
+    ->name('index', 'personatges.index');
+
+// RAZAS
+Route::resource('razas', RazaController::class);
 
 require __DIR__.'/auth.php';

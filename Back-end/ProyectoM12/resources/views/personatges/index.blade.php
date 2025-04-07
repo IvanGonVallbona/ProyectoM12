@@ -6,8 +6,8 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Llista de Registres</span>
-                    <a href="{{ route('registre_new') }}" class="btn btn-primary btn-sm">Nou Registre</a>
+                    <span>Llista de Personatges</span>
+                    <a href="{{ route('personatges.create') }}" class="btn btn-primary btn-sm">Nou Personatge</a>
                 </div>
 
                 <div class="card-body">
@@ -17,34 +17,34 @@
                         </div>
                     @endif
 
-                    @if(count($registres) > 0)
+                    @if(count($personatges) > 0)
                         <table class="table table-bordered table-hover">
                             <thead class="table-dark">
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Títol</th>
-                                    <th scope="col">Descripció</th>
-                                    <th scope="col">Data de creació</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Raça</th>
+                                    <th scope="col">Nivell</th>
+                                    <th scope="col">Classe</th>
+
                                     <th scope="col">Accions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($registres as $registre)
+                                @foreach($personatges as $personatge)
                                 <tr>
-                                    <th scope="row">{{ $registre->id }}</th>
-                                    <td>{{ $registre->titol }}</td>
-                                    <td>{{ Str::limit($registre->descripcio, 100) }}</td>
-                                    <td>{{ $registre->created_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ $personatge->nom }}</td>
+                                    <td>{{ $personatge->raza->nom ?? 'Sense raza'}}</td>
+                                    <td>{{ $personatge->nivell }}</td>
+                                    <td>{{ $personatge->classe->nom ?? 'Sense classe' }}</td>
                                     <td class="d-flex justify-content-around">
-                                        <a href="{{ route('registre_edit', $registre->id) }}" class="btn btn-warning btn-sm me-2">
+                                        <a href="{{ route('personatges.edit', $personatge->id) }}" class="btn btn-warning btn-sm m-1">
                                             <i class="fa fa-edit"></i> Editar
                                         </a>
-                                        
-                                        <form action="{{ route('registre_delete', $registre->id) }}" method="POST" 
-                                              onsubmit="return confirm('Estàs segur que vols eliminar aquest registre?');">
+                                        <form action="{{ route('personatges.destroy', $personatge->id) }}" method="POST" 
+                                              onsubmit="return confirm('Estàs segur que vols eliminar aquest personatge?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">
+                                            <button type="submit" class="btn btn-danger btn-sm m-1">
                                                 <i class="fa fa-trash"></i> Eliminar
                                             </button>
                                         </form>
@@ -55,7 +55,7 @@
                         </table>
                     @else
                         <div class="alert alert-info">
-                            No hi ha registres. <a href="{{ route('registre_new') }}">Crear un nou registre</a>
+                            No hi ha personatges registrats. <a href="{{ route('personatges.create') }}">Crear un nou personatge</a>
                         </div>
                     @endif
                 </div>
