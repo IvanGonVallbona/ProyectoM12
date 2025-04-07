@@ -21,9 +21,11 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('esdeveniments*') ? 'active' : '' }}" href="{{ route('esdeveniments.index') }}">Esdeveniments</a>
                 </li>
+                
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('wiki*') ? 'active' : '' }}" href="#">Wiki</a>
+                   <a class="nav-link" href="{{ route('manual_list') }} ">Manuals</a>
                 </li>
+                
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('registre*') ? 'active' : '' }}" href="{{ route('registre_list') }}">Registre Sessions</a>
                 </li>
