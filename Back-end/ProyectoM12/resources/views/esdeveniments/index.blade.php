@@ -19,7 +19,7 @@
 
                     @if(count($esdeveniments) > 0)
                         <table class="table table-bordered table-hover">
-                            <thead class="thead-dark">
+                            <thead class="table-dark">
                                 <tr>
                                     <th scope="col">Nom</th>
                                     <th scope="col">Descripció</th>
@@ -46,6 +46,18 @@
                                             <button type="submit" class="btn btn-danger btn-sm m-1">
                                                 <i class="fa fa-trash"></i> Eliminar
                                             </button>
+                                        </form>
+                                        <form action="{{ route('esdeveniments.inscribirUsuario', $esdeveniment->id) }}" method="POST">
+                                            @csrf
+                                            <div class="form-group">
+                                                <label for="user_id">Selecciona un usuari</label>
+                                                <select name="user_id" id="user_id" class="form-control">
+                                                    @foreach($users as $user)
+                                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary mt-2">Inscriur-t'hi!'</button>
                                         </form>
                                     </td>
                                 </tr>
