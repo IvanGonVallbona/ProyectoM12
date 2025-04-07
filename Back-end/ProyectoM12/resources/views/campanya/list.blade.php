@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
@@ -19,7 +19,7 @@
 
                     @if(count($campanyes) > 0)
                         <table class="table table-bordered table-hover">
-                            <thead class="thead-dark">
+                            <thead class="table-dark">
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Nom</th>

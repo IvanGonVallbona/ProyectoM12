@@ -7,24 +7,28 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('classe_list') }}">Classes</a>
+                    <a class="nav-link {{ request()->is('classes*') ? 'active' : '' }}" href="{{ route('classe_list') }}">Classes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('campanya_list') }}">Campanyes</a>
+                    <a class="nav-link {{ request()->is('razas*') ? 'active' : '' }}" href="{{ route('razas.index') }}">Razas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href=>Personatges</a>
+                    <a class="nav-link {{ request()->is('campanyes*') ? 'active' : '' }}" href="{{ route('campanya_list') }}">Campanyes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('esdeveniments.index') }}">Esdeveniments</a>
+                    <a class="nav-link {{ request()->is('personatges*') ? 'active' : '' }}" href="{{ route('personatges.index') }}">Personatges</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('manual_list') }} ">Manuals</a>
+                    <a class="nav-link {{ request()->is('esdeveniments*') ? 'active' : '' }}" href="{{ route('esdeveniments.index') }}">Esdeveniments</a>
                 </li>
+                
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('registre_list') }}">Registre Sessións</a>
+                   <a class="nav-link" href="{{ route('manual_list') }} ">Manuals</a>
                 </li>
-               
+                
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('registre*') ? 'active' : '' }}" href="{{ route('registre_list') }}">Registre Sessions</a>
+                </li>
             </ul>
             <ul class="navbar-nav">
                 @if (Auth::check())
@@ -36,10 +40,10 @@
                     </li>
                 @else
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">Inicia Sessió</a>
+                        <a class="nav-link {{ request()->routeIs('login') ? 'active' : '' }}" href="{{ route('login') }}">Inicia Sessió</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}">Registra't</a>
+                        <a class="nav-link {{ request()->routeIs('register') ? 'active' : '' }}" href="{{ route('register') }}">Registra't</a>
                     </li>
                 @endif
             </ul>

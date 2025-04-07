@@ -73,4 +73,26 @@ class EsdevenimentController extends Controller
         $esdeveniment->delete();
         return redirect()->route('esdeveniments.index')->with('success', 'Esdeveniment eliminat!');
     }
+
+    public function inscriureUsuari(Request $request, Esdeveniment $esdeveniment)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        $esdeveniment->participants()->attach($request->user_id);
+
+        return redirect()->route('esdeveniments.index')->with('status', 'Usuari inscrit correctament!');
+    }
+
+    public function inscriurePersonatge(Request $request, Esdeveniment $esdeveniment)
+    {
+        $request->validate([
+            'personatge_id' => 'required|exists:personatges,id',
+        ]);
+
+        $esdeveniment->personatges()->attach($request->personatge_id);
+
+        return redirect()->route('esdeveniments.index')->with('status', 'Personatge inscrit correctament!');
+    }
 }
