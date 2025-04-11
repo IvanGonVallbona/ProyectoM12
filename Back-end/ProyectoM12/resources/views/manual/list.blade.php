@@ -25,6 +25,7 @@
                                     <th>Nom</th>
                                     <th>Tipus</th>
                                     <th>Descripció</th>
+                                    <th>Imatge</th>
                                     <th>Accions</th>
                                 </tr>
                             </thead>
@@ -35,6 +36,13 @@
                                     <td>{{ $manual->nom }}</td>
                                     <td>{{ $manual->tipus }}</td>
                                     <td>{{ Str::limit($manual->descripcio, 50) }}</td>
+                                    <td>
+                                        @if ($manual->imatge)
+                                            <img src="{{ $manual->imatge }}" alt="Foto Manual" style="width: 100px;">
+                                         @else
+                                             No disponible
+                                        @endif
+                                    </td>
                                     <td>
                                         <a href="{{ route('manual_edit', $manual->id) }}" class="btn btn-warning btn-sm">Editar</a>
                                         <form action="{{ route('manual_delete', $manual->id) }}" method="POST" style="display:inline-block;">

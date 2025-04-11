@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Manual;
+use Illuminate\Support\Facades\File;
 
 class ManualController extends Controller
 {
     public function list()
     {
         $manuals = Manual::all();
+
+        foreach ($manuals as $manual) {
+            if ($manual->imatge) {
+                $manual->imatge = asset('uploads/imatges/' . $manual->imatge);
+            } else {
+                $manual->imatge = null;
+            }
+        }
         return view('manual.list', ['manuals' => $manuals]);
     }
 
@@ -31,9 +40,12 @@ class ManualController extends Controller
             $manual->jugabilidad = $request->jugabilidad;
 
             if ($request->hasFile('imatge')) {
-                $path = $request->file('imatge')->store('manuals', 'public');
-                $manual->imatge = $path;
+                $file = $request->file('imatge');
+                $filename = uniqid() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/imatges'), $filename);
+                $manual->imatge = $filename;
             }
+
 
             $manual->save();
             
@@ -63,8 +75,14 @@ class ManualController extends Controller
             $manual->jugabilidad = $request->jugabilidad;
 
             if ($request->hasFile('imatge')) {
-                $path = $request->file('imatge')->store('manuals', 'public');
-                $manual->imatge = $path;
+                if ($manual->imatge && file_exists(public_path('uploads/imatges/' . $manual->imatge))) {
+                    unlink(public_path('uploads/imatges/' . $manual->imatge));
+                }
+
+                $file = $request->file('imatge');
+                $filename = uniqid() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/imatges'), $filename);
+                $manual->imatge = $filename;
             }
 
             $manual->save();
@@ -81,6 +99,11 @@ class ManualController extends Controller
         $manual = Manual::findOrFail($id);
         
         $nom = $manual->nom;
+        $rutaImatge = public_path('uploads/imatges/' . $manual->imatge);
+
+        if ($manual->imatge && File::exists($rutaImatge)) {
+        File::delete($rutaImatge);
+        }
         
         $manual->delete();
         
