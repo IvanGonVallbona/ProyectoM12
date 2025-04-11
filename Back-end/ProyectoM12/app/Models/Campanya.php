@@ -35,4 +35,12 @@ class Campanya extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Obtener los personajes asociados a la campaña.
+     */
+    public function personatges()
+    {
+        return $this->hasMany(Personatge::class);
+    }
 }
