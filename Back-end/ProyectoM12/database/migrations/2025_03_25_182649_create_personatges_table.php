@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('personatges', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('nom');
             $table->integer('nivell');
             $table->foreignId('classe_id')->constrained('classes')->onDelete('cascade');
             $table->foreignId('raza_id')->constrained('razas')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('campanya_id')->nullable()->constrained('campanyes')->onDelete('set null');
-
+            $table->string('imatge')->nullable();
+            $table->timestamps();
         });
     }
 

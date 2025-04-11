@@ -13,6 +13,7 @@ class Personatge extends Model
         'raza_id',
         'user_id',
         'campanya_id',
+        'imatge',
     ];
     protected $casts = [
         'nivell' => 'integer',
