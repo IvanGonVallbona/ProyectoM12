@@ -29,10 +29,12 @@
                                     @endforeach
                                 </select>
                             </div>
+
                             <div class="form-group">
                                 <label for="nivell">Nivell</label>
                                 <input type="number" name="nivell" id="nivell" class="form-control" value="{{ $personatge->nivell }}" required>
                             </div>
+
                             <div class="form-group">
                                 <label for="classe_id">Classe</label>
                                 <select name="classe_id" id="classe_id" class="form-control" required>
@@ -44,17 +46,20 @@
                                     @endforeach
                                 </select>
                             </div>
+                             
+
                             <div class="form-group">
                                 <label for="imatge">Imatge</label>
-                                <input type="file" name="imatge" id="imatge" class="form-control">
+                                <input type="file" name="imatge" id="imatge" class="form-control" {{ old('eliminar_foto') ? 'disabled' : '' }}>
                             </div>
                             
                             @if ($personatge->imatge)
                                 <div class="form-group">
                                     <label for="imatgeActual">Imatge actual:</label>
-                                    <img name="imatgeActual" src="{{ asset($personatge->imatge) }}" alt="{{ asset($personatge->imatge) }}" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+                                    <img name="imatgeActual" src="{{ asset($personatge->imatge) }}" alt="{{ $personatge->nom }}" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
                                 </div>
                             @endif
+
                                 
                             <button type="submit" class="btn btn-primary my-3">Actualizar</button>
                             <a href="{{ route('personatges.index') }}" class="btn btn-secondary">Cancel·lar</a>
@@ -69,4 +74,23 @@
         </div>
     @endauth
 </div>
+
+<script>
+    function toggleImageInput() {
+        const eliminarFotoCheckbox = document.getElementById('eliminar_foto');
+        const imatgeInput = document.getElementById('imatge');
+        const warning = document.getElementById('warningEliminarFoto');
+
+        if (eliminarFotoCheckbox.checked) {
+            imatgeInput.disabled = true;
+            warning.style.display = 'block';
+        } else {
+            imatgeInput.disabled = false;
+            warning.style.display = 'none';
+        }
+    }
+
+    // Ejecutar al cargar la página si el checkbox está marcado
+    document.addEventListener('DOMContentLoaded', toggleImageInput);
+</script>
 @endsection

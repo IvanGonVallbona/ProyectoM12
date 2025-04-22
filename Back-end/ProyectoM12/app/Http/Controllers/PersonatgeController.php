@@ -143,6 +143,11 @@ class PersonatgeController extends Controller
      */
     public function destroy(Personatge $personatge)
     {
+        // Comprovar si hi ha una imatge associada i eliminar-la
+        if ($personatge->imatge && file_exists(public_path($personatge->imatge))) {
+            unlink(public_path($personatge->imatge));
+        }
+        // Eliminar el registre del personatge
         $personatge->delete();
 
         return redirect()->route('personatges.index')->with('status', 'Personatge eliminat correctament!');
