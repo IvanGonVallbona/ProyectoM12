@@ -33,7 +33,7 @@ class EsdevenimentController extends Controller
             'descripcio' => $request->descripcio,
             'data' => $request->data,
             'tipus' => $request->tipus,
-            'user_id' => auth()->id(), // Asignar el ID del usuario autenticado
+            'user_id' => auth()->id(), 
         ]);
 
         return redirect()->route('esdeveniments.index')->with('status', 'Esdeveniment creat correctament!');
