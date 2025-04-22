@@ -46,16 +46,12 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="imatge" class="form-label">Imatge</label>
-                            <input type="file" name="imatge" id="imatge" class="form-control @error('imatge') is-invalid @enderror">
+                        <label for="imatge">Imatge</label>
+                            <input type="file" name="imatge" />
+                            <br>
                             @if ($manual->imatge)
-                                <p>Imatge actual: <img src="{{ asset('storage/' . $manual->imatge) }}" alt="Imatge del manual" width="100"></p>
+                                <img src="{{ asset('uploads/imatges_manuals/' . $manual->imatge) }}" alt="Foto Manual" style="width: 100px; margin-top: 10px;">
                             @endif
-                            @error('imatge')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
                         </div>
                         <button type="submit" class="btn btn-primary">Guardar Canvis</button>
                     </form>
