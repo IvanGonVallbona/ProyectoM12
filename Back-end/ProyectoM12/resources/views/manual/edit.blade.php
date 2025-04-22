@@ -50,7 +50,7 @@
                             <input type="file" name="imatge" />
                             <br>
                             @if ($manual->imatge)
-                                <img src="{{ asset('uploads/imatges/' . $manual->imatge) }}" alt="Foto Manual" style="width: 100px; margin-top: 10px;">
+                                <img src="{{ asset('uploads/imatges_manuals/' . $manual->imatge) }}" alt="Foto Manual" style="width: 100px; margin-top: 10px;">
                             @endif
                         </div>
                         <button type="submit" class="btn btn-primary">Guardar Canvis</button>
