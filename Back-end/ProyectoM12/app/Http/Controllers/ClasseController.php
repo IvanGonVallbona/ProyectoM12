@@ -3,68 +3,62 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Models\Classe;
+use App\Models\Manual;
 
 class ClasseController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
-    function list(){
-        $classes = Classe::all();
-        return view('classe.list', ['classes' => $classes]);
+    public function list()
+    {
+        $classes = Classe::with('manual')->get();
+        return view('classe.list', compact('classes'));
     }
 
     public function new(Request $request)
     {
+        $manuals = Manual::all();
+
         if ($request->isMethod('post')) {
             $request->validate([
                 'nom' => 'required|string|max:255',
-                'descripcio' => 'required|string'
+                'descripcio' => 'required|string',
+                'joc_id' => 'required|exists:manuals,id',
             ]);
-            
-            $classe = new Classe;
-            $classe->nom = $request->nom;
-            $classe->descripcio = $request->descripcio;
-            $classe->save();
-            
-            return redirect()->route('classe_list')->with('status', 'Nova classe '.$classe->nom.' creada!');
+
+            Classe::create($request->all());
+            return redirect()->route('classe_list')->with('status', 'Classe creada correctament.');
         }
-        
-        return view('classe.new');
+
+        return view('classe.new', compact('manuals'));
     }
 
     public function edit(Request $request, $id)
     {
         $classe = Classe::findOrFail($id);
-        
+        $manuals = Manual::all();
+
         if ($request->isMethod('post')) {
             $request->validate([
                 'nom' => 'required|string|max:255',
-                'descripcio' => 'required|string'
+                'descripcio' => 'required|string',
+                'joc_id' => 'required|exists:manuals,id',
             ]);
-            
-            $classe->nom = $request->nom;
-            $classe->descripcio = $request->descripcio;
-            $classe->save();
-            
-            return redirect()->route('classe_list')->with('status', 'Classe '.$classe->nom.' actualitzada!');
+
+            $classe->update($request->all());
+            return redirect()->route('classe_list')->with('status', 'Classe actualitzada correctament.');
         }
-        
-        return view('classe.edit', ['classe' => $classe]);
+
+        return view('classe.edit', compact('classe', 'manuals'));
     }
 
     public function delete($id)
     {
         $classe = Classe::findOrFail($id);
-        
+
         $nom = $classe->nom;
         
         $classe->delete();
-        
+
         return redirect()->route('classe_list')->with('status', 'Classe '.$nom.' eliminada!');
     }
-
 }

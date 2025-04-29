@@ -11,12 +11,7 @@ class Campanya extends Model
 
     protected $table = 'campanyes';
 
-    protected $fillable = [
-        'nom',
-        'descripcio',
-        'estat',
-        'user_id'
-    ];
+    protected $fillable = ['nom', 'descripcio', 'estat', 'user_id', 'joc_id'];
 
     public function user()
     {

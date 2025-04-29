@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Raza extends Model
 {
-    protected $fillable = ['nom', 'descripcio'];
+    protected $fillable = ['nom', 'descripcio', 'joc_id'];
 
     public function personatges()
     {

@@ -75,22 +75,5 @@
     @endauth
 </div>
 
-<script>
-    function toggleImageInput() {
-        const eliminarFotoCheckbox = document.getElementById('eliminar_foto');
-        const imatgeInput = document.getElementById('imatge');
-        const warning = document.getElementById('warningEliminarFoto');
 
-        if (eliminarFotoCheckbox.checked) {
-            imatgeInput.disabled = true;
-            warning.style.display = 'block';
-        } else {
-            imatgeInput.disabled = false;
-            warning.style.display = 'none';
-        }
-    }
-
-    // Ejecutar al cargar la página si el checkbox está marcado
-    document.addEventListener('DOMContentLoaded', toggleImageInput);
-</script>
 @endsection

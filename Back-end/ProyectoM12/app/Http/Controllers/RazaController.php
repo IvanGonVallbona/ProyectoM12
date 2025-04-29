@@ -3,19 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Raza;
+use App\Models\Manual;
 use Illuminate\Http\Request;
 
 class RazaController extends Controller
 {
     public function index()
     {
-        $razas = Raza::all();
+        $razas = Raza::with('manual')->get();
         return view('razas.index', compact('razas'));
     }
 
     public function create()
     {
-        return view('razas.create');
+        $manuals = Manual::all();
+        return view('razas.create', compact('manuals'));
     }
 
     public function store(Request $request)
@@ -23,6 +25,7 @@ class RazaController extends Controller
         $request->validate([
             'nom' => 'required|string|max:255',
             'descripcio' => 'nullable|string',
+            'joc_id' => 'required|exists:manuals,id',
         ]);
 
         Raza::create($request->all());
@@ -31,7 +34,8 @@ class RazaController extends Controller
 
     public function edit(Raza $raza)
     {
-        return view('razas.edit', compact('raza'));
+        $manuals = Manual::all();
+        return view('razas.edit', compact('raza', 'manuals'));
     }
 
     public function update(Request $request, Raza $raza)
@@ -39,6 +43,7 @@ class RazaController extends Controller
         $request->validate([
             'nom' => 'required|string|max:255',
             'descripcio' => 'required|string',
+            'joc_id' => 'required|exists:manuals,id',
         ]);
 
         $raza->update($request->all());
