@@ -73,3 +73,4 @@ Route::resource('personatges', PersonatgeController::class)
 Route::resource('razas', RazaController::class);
 
 require __DIR__.'/auth.php';
+ 

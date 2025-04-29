@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Raza;
+use Illuminate\Support\Facades\DB;
 
 class RazaSeeder extends Seeder
 {
@@ -12,33 +12,21 @@ class RazaSeeder extends Seeder
      */
     public function run(): void
     {
-        Raza::create([
-            'nom' => 'Humà',
-            'descripcio' => 'Una raça versàtil i adaptativa, amb habilitats equilibrades.',
-        ]);
-
-        Raza::create([
-            'nom' => 'Elf',
-            'descripcio' => 'Una raça elegant i màgica, coneguda per la seva longevitat i saviesa.',
-        ]);
-
-        Raza::create([
-            'nom' => 'Nan',
-            'descripcio' => 'Una raça robusta i tenaç, amb una gran habilitat per a la mineria i la forja.',
-        ]);
-
-        Raza::create([
-            'nom' => 'Orc',
-            'descripcio' => 'Una raça forta i guerrera, coneguda per la seva ferocitat en el combat.',
-        ]);
-
-        Raza::create([
-            'nom' => 'Mitjà',
-            'descripcio' => 'Una raça adaptable i equilibrada, amb una gran varietat d’habilitats.',
-        ]);
-        Raza::create([
-            'nom' => 'Draconic',
-            'descripcio' => 'Una raça poderosa i majestuosa, amb una gran habilitat per a la màgia i el combat.',
+        DB::table('razas')->insert([
+            // Razas de D&D
+            ['nom' => 'Humà', 'descripcio' => 'Versàtil i adaptatiu.', 'joc_id' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['nom' => 'Elf', 'descripcio' => 'Elegant i màgic.', 'joc_id' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['nom' => 'Nan', 'descripcio' => 'Robust i tenaç.', 'joc_id' => 1, 'created_at' => now(), 'updated_at' => now()],
+            
+            // Razas de Warhammer
+            ['nom' => 'Humà', 'descripcio' => 'Habitant de l’Imperi.', 'joc_id' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['nom' => 'Orc', 'descripcio' => 'Guerrer brutal.', 'joc_id' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['nom' => 'Caos', 'descripcio' => 'Servent dels déus foscos.', 'joc_id' => 2, 'created_at' => now(), 'updated_at' => now()],
+            
+            // Razas de Pathfinder
+            ['nom' => 'Humà', 'descripcio' => 'Versàtil i equilibrat.', 'joc_id' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['nom' => 'Gnom', 'descripcio' => 'Petit i màgic.', 'joc_id' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['nom' => 'Mitjà', 'descripcio' => 'Petit i àgil.', 'joc_id' => 3, 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }
