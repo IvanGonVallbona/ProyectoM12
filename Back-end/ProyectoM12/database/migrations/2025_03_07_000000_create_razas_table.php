@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nom');
             $table->text('descripcio');
+            $table->foreignId('joc_id')->constrained('manuals')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('campanyes', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('nom');
             $table->string('descripcio');
             $table->string('estat');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('joc_id')->constrained('manuals')->onDelete('cascade');
+            
+            $table->timestamps();
 
 
         });

@@ -10,4 +10,12 @@ class Classe extends Model
     {
         return $this->hasMany(Personatge::class);
     }
+
+    /**
+     * Relación con el manual.
+     */
+    public function manual()
+    {
+        return $this->belongsTo(Manual::class, 'joc_id');
+    }
 }

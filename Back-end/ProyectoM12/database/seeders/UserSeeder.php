@@ -16,5 +16,27 @@ class UserSeeder extends Seeder
             'email' => 'admin@example.com',
             'password' => Hash::make('password'),
         ]);
+
+        User::create([
+            'name' => 'Dungeon Master',
+            'email' => 'dm@example.com',
+            'password' => Hash::make('password'),
+        ]);
+
+        // Usuari normal 1
+        User::create([
+            'name' => 'Player One',
+            'email' => 'player1@example.com',
+            'password' => Hash::make('password'),
+        ]);
+
+        // Usuari normal 2
+        User::create([
+            'name' => 'Player Two',
+            'email' => 'player2@example.com',
+            'password' => Hash::make('password'),
+        ]);
+        
+
     }
 }

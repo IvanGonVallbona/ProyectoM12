@@ -13,42 +13,20 @@ class ClasseSeeder extends Seeder
     public function run(): void
     {
         DB::table('classes')->insert([
-            [
-                'nom' => 'Guerrer',
-                'descripcio' => 'Especialitzat en combat cos a cos i resistència.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'nom' => 'Mag',
-                'descripcio' => 'Utilitza encanteris per atacar i defensar-se.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'nom' => 'Arquer',
-                'descripcio' => 'Expert en combat a distància amb arcs i fletxes.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'nom' => 'Clergue',
-                'descripcio' => 'Especialitzat en curació i suport als aliats.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'nom' => 'Assassí',
-                'descripcio' => 'Expert en furtivitat i atacs ràpids.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'nom' => 'Barbar',
-                'descripcio' => 'Combatent salvatge amb gran força física.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+            // Clases de D&D
+            ['nom' => 'Guerrer', 'descripcio' => 'Combatent cos a cos.', 'joc_id' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['nom' => 'Mag', 'descripcio' => 'Usuari de màgia.', 'joc_id' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['nom' => 'Clergue', 'descripcio' => 'Sanador i suport.', 'joc_id' => 1, 'created_at' => now(), 'updated_at' => now()],
+            
+            // Clases de Warhammer
+            ['nom' => 'Soldat', 'descripcio' => 'Combatent militar.', 'joc_id' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['nom' => 'Hechicero', 'descripcio' => 'Usuari de màgia fosca.', 'joc_id' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['nom' => 'Mercenari', 'descripcio' => 'Guerrer a sou.', 'joc_id' => 2, 'created_at' => now(), 'updated_at' => now()],
+            
+            // Clases de Pathfinder
+            ['nom' => 'Explorador', 'descripcio' => 'Especialista en exploració.', 'joc_id' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['nom' => 'Invocador', 'descripcio' => 'Usuari de màgia invocadora.', 'joc_id' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['nom' => 'Bàrbar', 'descripcio' => 'Combatent salvatge.', 'joc_id' => 3, 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }
