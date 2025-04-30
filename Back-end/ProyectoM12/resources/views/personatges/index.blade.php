@@ -26,6 +26,7 @@
                                         <th scope="col">Raça</th>
                                         <th scope="col">Nivell</th>
                                         <th scope="col">Classe</th>
+                                        <th scope="col">Joc</th> <!-- Nueva columna -->
                                         <th scope="col">Imatge</th>
                                         <th scope="col">Accions</th>
                                     </tr>
@@ -37,6 +38,7 @@
                                         <td>{{ $personatge->raza->nom ?? 'Sense raza'}}</td>
                                         <td>{{ $personatge->nivell }}</td>
                                         <td>{{ $personatge->classe->nom ?? 'Sense classe' }}</td>
+                                        <td>{{ $personatge->manual->nom ?? 'Sense joc' }}</td> 
                                         <td>
                                             @if($personatge->imatge)
                                                 <img src="{{ $personatge->imatge }}" alt="{{ $personatge->nom }}" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">

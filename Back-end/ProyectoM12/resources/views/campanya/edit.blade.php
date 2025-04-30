@@ -51,6 +51,23 @@
                             @enderror
                         </div>
 
+                        <div class="mb-3">
+                            <label for="joc_id" class="form-label">Joc:</label>
+                            <select name="joc_id" id="joc_id" class="form-select @error('joc_id') is-invalid @enderror" required>
+                                <option value="" disabled>Selecciona un joc</option>
+                                @foreach($manuals as $manual)
+                                    <option value="{{ $manual->id }}" {{ $campanya->joc_id == $manual->id ? 'selected' : '' }}>
+                                        {{ $manual->nom }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('joc_id')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
                         <!-- Mantener el mismo usuario que creó la campaña -->
                         <input type="hidden" name="user_id" value="{{ $campanya->user_id }}">
 

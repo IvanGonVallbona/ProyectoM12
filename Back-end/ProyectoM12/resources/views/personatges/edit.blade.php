@@ -46,6 +46,18 @@
                                     @endforeach
                                 </select>
                             </div>
+
+                            <div class="form-group">
+                                <label for="joc_id">Joc</label>
+                                <select name="joc_id" id="joc_id" class="form-control" required>
+                                    <option value="" disabled>Selecciona un joc</option>
+                                    @foreach($manuals as $manual)
+                                        <option value="{{ $manual->id }}" {{ $personatge->joc_id == $manual->id ? 'selected' : '' }}>
+                                            {{ $manual->nom }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                              
 
                             <div class="form-group">
@@ -74,6 +86,4 @@
         </div>
     @endauth
 </div>
-
-
 @endsection

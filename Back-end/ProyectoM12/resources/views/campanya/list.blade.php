@@ -25,6 +25,7 @@
                                     <th scope="col">Nom</th>
                                     <th scope="col">Descripció</th>
                                     <th scope="col">Estat</th>
+                                    <th scope="col">Joc</th>
                                     <th scope="col">Creat per</th>
                                     <th scope="col">Accions</th>
                                 </tr>
@@ -45,6 +46,7 @@
                                             {{ $campanya->estat }}
                                         </span>
                                     </td>
+                                    <td>{{ $campanya->manual->nom }}</td>
                                     <td>{{ $campanya->user->name ?? 'Usuari desconegut' }}</td>
                                     <td class="d-flex justify-content-around">
                                         <a href="{{ route('campanya_edit', $campanya->id) }}" class="btn btn-warning btn-sm me-2">
