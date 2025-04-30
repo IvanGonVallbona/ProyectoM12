@@ -18,22 +18,22 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Dungeon Master',
+            'name' => 'DM',
             'email' => 'dm@example.com',
             'password' => Hash::make('password'),
         ]);
 
         // Usuari normal 1
         User::create([
-            'name' => 'Player One',
-            'email' => 'player1@example.com',
+            'name' => 'User 1',
+            'email' => 'user1@example.com',
             'password' => Hash::make('password'),
         ]);
 
         // Usuari normal 2
         User::create([
-            'name' => 'Player Two',
-            'email' => 'player2@example.com',
+            'name' => 'User 2',
+            'email' => 'user2@example.com',
             'password' => Hash::make('password'),
         ]);
         

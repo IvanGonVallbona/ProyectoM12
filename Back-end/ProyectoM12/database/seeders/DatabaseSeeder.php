@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             RazaSeeder::class,
             CampanyaSeeder::class,
             PersonatgeSeeder::class,
+            EsdevenimentSeeder::class,
         ]);
 
     }

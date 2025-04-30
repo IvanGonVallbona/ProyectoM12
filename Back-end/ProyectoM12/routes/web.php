@@ -62,8 +62,8 @@ Route::delete('/manual/delete/{id}', [ManualController::class, 'delete'])->name(
 Route::resource('esdeveniments', EsdevenimentController::class)
     ->name('index', 'esdeveniments.index');
 
-Route::post('/esdeveniments/{esdeveniment}/inscriure-usuari', [EsdevenimentController::class, 'inscriureUsuario'])->name('esdeveniments.inscriureUsuario');
-Route::post('/esdeveniments/{esdeveniment}/inscriure-personatge', [EsdevenimentController::class, 'inscriurePersonatge'])->name('esdeveniments.inscriurePersonatge');
+Route::post('/esdeveniments/{esdeveniment}/inscriure-usuari', [EsdevenimentController::class, 'inscriureUsuari'])->name('esdeveniments.inscriureUsuari');
+Route::post('/esdeveniments/{esdeveniment}/desinscriure-usuari', [EsdevenimentController::class, 'desinscriureUsuari'])->name('esdeveniments.desinscriureUsuari');
 
 // PERSONATGES
 Route::resource('personatges', PersonatgeController::class)
