@@ -15,6 +15,7 @@ class Campanya extends Model
         'nom',
         'descripcio',
         'estat',
+        'joc_id',
         'user_id'
     ];
 

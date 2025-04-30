@@ -46,6 +46,15 @@
                                 <label for="imatge">Imatge</label>
                                 <input type="file" name="imatge" id="imatge" class="form-control">
                             </div>
+                            <div class="form-group">
+                                <label for="joc_id">Joc</label>
+                                <select name="joc_id" id="joc_id" class="form-control" required>
+                                    <option value="" disabled selected>Selecciona un joc</option>
+                                    @foreach($manuals as $manual)
+                                        <option value="{{ $manual->id }}">{{ $manual->nom }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             
                             <button type="submit" class="btn btn-primary my-3">Guardar</button>
                             <a href="{{ route('personatges.index') }}" class="btn btn-secondary">Cancel·lar</a>
