@@ -80,19 +80,25 @@ class EsdevenimentController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        $esdeveniment->participants()->attach($request->user_id);
+        // Inscriure l'usuari només si no està inscrit
+        if (!$esdeveniment->participants->contains($request->user_id)) {
+            $esdeveniment->participants()->attach($request->user_id);
+        }
 
         return redirect()->route('esdeveniments.index')->with('status', 'Usuari inscrit correctament!');
     }
 
-    public function inscriurePersonatge(Request $request, Esdeveniment $esdeveniment)
+    public function desinscriureUsuari(Request $request, Esdeveniment $esdeveniment)
     {
         $request->validate([
-            'personatge_id' => 'required|exists:personatges,id',
+            'user_id' => 'required|exists:users,id',
         ]);
 
-        $esdeveniment->personatges()->attach($request->personatge_id);
+        // Desinscriure l'usuari només si està inscrit
+        if ($esdeveniment->participants->contains($request->user_id)) {
+            $esdeveniment->participants()->detach($request->user_id);
+        }
 
-        return redirect()->route('esdeveniments.index')->with('status', 'Personatge inscrit correctament!');
+        return redirect()->route('esdeveniments.index')->with('status', 'Usuari desinscrit correctament!');
     }
 }

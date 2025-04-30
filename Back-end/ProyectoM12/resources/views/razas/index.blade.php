@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Llista de Razas</span>
-                    <a href="{{ route('classe_new') }}" class="btn btn-primary btn-sm">Nova raza</a>
+                    <a href="{{ route('razas.create') }}" class="btn btn-primary btn-sm">Nova raza</a>
                 </div>
 
                 <div class="card-body">
@@ -23,6 +23,7 @@
                                 <tr>
                                     <th>Nom</th>
                                     <th>Descripció</th>
+                                    <th>Joc</th>
                                     <th>Accions</th>
                                 </tr>
                             </thead>
@@ -31,6 +32,7 @@
                                 <tr>
                                     <td>{{ $raza->nom }}</td>
                                     <td>{{ $raza->descripcio }}</td>
+                                    <td>{{ $raza->manual->nom ?? 'Sense joc' }}</td>
                                     <td>
                                         <a href="{{ route('razas.edit', $raza->id) }}" class="btn btn-warning btn-sm">Editar</a>
                                         <form action="{{ route('razas.destroy', $raza->id) }}" method="POST" style="display: inline-block;">
