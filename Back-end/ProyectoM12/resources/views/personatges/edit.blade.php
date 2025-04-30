@@ -46,6 +46,18 @@
                                     @endforeach
                                 </select>
                             </div>
+
+                            <div class="form-group">
+                                <label for="joc_id">Joc</label>
+                                <select name="joc_id" id="joc_id" class="form-control" required>
+                                    <option value="" disabled>Selecciona un joc</option>
+                                    @foreach($manuals as $manual)
+                                        <option value="{{ $manual->id }}" {{ $personatge->joc_id == $manual->id ? 'selected' : '' }}>
+                                            {{ $manual->nom }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                              
 
                             <div class="form-group">
@@ -74,23 +86,4 @@
         </div>
     @endauth
 </div>
-
-<script>
-    function toggleImageInput() {
-        const eliminarFotoCheckbox = document.getElementById('eliminar_foto');
-        const imatgeInput = document.getElementById('imatge');
-        const warning = document.getElementById('warningEliminarFoto');
-
-        if (eliminarFotoCheckbox.checked) {
-            imatgeInput.disabled = true;
-            warning.style.display = 'block';
-        } else {
-            imatgeInput.disabled = false;
-            warning.style.display = 'none';
-        }
-    }
-
-    // Ejecutar al cargar la página si el checkbox está marcado
-    document.addEventListener('DOMContentLoaded', toggleImageInput);
-</script>
 @endsection
