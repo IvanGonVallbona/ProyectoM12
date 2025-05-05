@@ -7,13 +7,21 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Llista de Manuals</span>
-                    <a href="{{ route('manual_new') }}" class="btn btn-primary btn-sm">Nou Manual</a>
+                    @if (Auth::user() && Auth::user()->tipus_usuari === 'admin')
+                        <a href="{{ route('manual_new') }}" class="btn btn-primary btn-sm">Nou Manual</a>
+                    @endif
                 </div>
 
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
+                        </div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('error') }}
                         </div>
                     @endif
 
@@ -26,7 +34,9 @@
                                     <th>Tipus</th>
                                     <th>Descripció</th>
                                     <th>Imatge</th>
+                                    @if (Auth::user() && Auth::user()->tipus_usuari === 'admin')
                                     <th>Accions</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -43,6 +53,7 @@
                                              No disponible
                                         @endif
                                     </td>
+                                    @if (Auth::user() && Auth::user()->tipus_usuari === 'admin')
                                     <td>
                                         <a href="{{ route('manual_edit', $manual->id) }}" class="btn btn-warning btn-sm">Editar</a>
                                         <form action="{{ route('manual_delete', $manual->id) }}" method="POST" style="display:inline-block;">
@@ -51,6 +62,7 @@
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Estàs segur que vols eliminar aquest manual?');">Eliminar</button>
                                         </form>
                                     </td>
+                                    @endif
                                 </tr>
                                 @endforeach
                             </tbody>

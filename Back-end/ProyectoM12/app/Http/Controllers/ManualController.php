@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Manual;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
 
 class ManualController extends Controller
 {
@@ -24,6 +25,9 @@ class ManualController extends Controller
 
     public function new(Request $request)
     {
+        if (Auth::user()->tipus_usuari !== 'admin'){
+            return redirect()->route('manual_list')->with('error', 'No tens permisos per crear manuals.');
+        }
         if ($request->isMethod('post')) {
             $request->validate([
                 'nom' => 'required|string|max:255',
@@ -58,6 +62,9 @@ class ManualController extends Controller
 
     public function edit(Request $request, $id)
     {
+        if (Auth::user()->tipus_usuari !== 'admin') {
+            return redirect()->route('manual_list')->with('error', 'No tens permisos per editar manuals.');
+        }
         $manual = Manual::findOrFail($id);
         
         if ($request->isMethod('post')) {
@@ -96,6 +103,10 @@ class ManualController extends Controller
 
     public function delete($id)
     {
+
+        if (Auth::user()->tipus_usuari !== 'admin') {
+            return redirect()->route('manual_list')->with('error', 'No tens permisos per eliminar manuals.');
+        }
         $manual = Manual::findOrFail($id);
         
         $nom = $manual->nom;
