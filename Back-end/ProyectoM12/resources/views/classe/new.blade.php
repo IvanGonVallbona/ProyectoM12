@@ -35,6 +35,21 @@
                             @enderror
                         </div>
 
+                        <div class="mb-3">
+                            <label for="joc_id" class="form-label">Joc:</label>
+                            <select name="joc_id" id="joc_id" class="form-control @error('joc_id') is-invalid @enderror" required>
+                                <option value="">Selecciona un joc</option>
+                                @foreach ($manuals as $manual)
+                                    <option value="{{ $manual->id }}">{{ $manual->nom }}</option>
+                                @endforeach
+                            </select>
+                            @error('joc_id')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </div>
