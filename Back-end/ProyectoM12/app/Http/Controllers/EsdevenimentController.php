@@ -16,6 +16,9 @@ class EsdevenimentController extends Controller
 
     public function create()
     {
+        if (Auth::user()->tipus_usuari !== 'admin' && Auth::user()->tipus_usuari !== 'dm'){
+            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per crear esdeveniments.');
+        }
         return view('esdeveniments.create');
     }
 
@@ -46,6 +49,13 @@ class EsdevenimentController extends Controller
 
     public function edit(Esdeveniment $esdeveniment)
     {
+        if (Auth::user()->tipus_usuari === 'dm' && $esdeveniment->user_id !== Auth::id()) {
+            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per editar aquest esdeveniment.');
+        }
+    
+        if (Auth::user()->tipus_usuari !== 'admin' && Auth::user()->tipus_usuari !== 'dm') {
+            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per editar esdeveniments.');
+        }
         return view('esdeveniments.edit', compact('esdeveniment'));
     }
 
@@ -70,6 +80,13 @@ class EsdevenimentController extends Controller
 
     public function destroy(Esdeveniment $esdeveniment)
     {
+        if (Auth::user()->tipus_usuari === 'dm' && $esdeveniment->user_id !== Auth::id()) {
+            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per eliminar aquest esdeveniment.');
+        }
+    
+        if (Auth::user()->tipus_usuari !== 'admin' && Auth::user()->tipus_usuari !== 'dm') {
+            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per eliminar esdeveniments.');
+        }
         $esdeveniment->delete();
         return redirect()->route('esdeveniments.index')->with('success', 'Esdeveniment eliminat!');
     }
@@ -80,19 +97,25 @@ class EsdevenimentController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        $esdeveniment->participants()->attach($request->user_id);
+        // Inscriure l'usuari només si no està inscrit
+        if (!$esdeveniment->participants->contains($request->user_id)) {
+            $esdeveniment->participants()->attach($request->user_id);
+        }
 
         return redirect()->route('esdeveniments.index')->with('status', 'Usuari inscrit correctament!');
     }
 
-    public function inscriurePersonatge(Request $request, Esdeveniment $esdeveniment)
+    public function desinscriureUsuari(Request $request, Esdeveniment $esdeveniment)
     {
         $request->validate([
-            'personatge_id' => 'required|exists:personatges,id',
+            'user_id' => 'required|exists:users,id',
         ]);
 
-        $esdeveniment->personatges()->attach($request->personatge_id);
+        // Desinscriure l'usuari només si està inscrit
+        if ($esdeveniment->participants->contains($request->user_id)) {
+            $esdeveniment->participants()->detach($request->user_id);
+        }
 
-        return redirect()->route('esdeveniments.index')->with('status', 'Personatge inscrit correctament!');
+        return redirect()->route('esdeveniments.index')->with('status', 'Usuari desinscrit correctament!');
     }
 }
