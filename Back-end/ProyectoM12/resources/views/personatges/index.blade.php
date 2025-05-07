@@ -26,6 +26,7 @@
                                         <th scope="col">Raça</th>
                                         <th scope="col">Nivell</th>
                                         <th scope="col">Classe</th>
+                                        <th scope="col">Joc</th>
                                         <th scope="col">Imatge</th>
                                         <th scope="col">Accions</th>
                                     </tr>
@@ -34,9 +35,11 @@
                                     @foreach($personatges as $personatge)
                                     <tr>
                                         <td>{{ $personatge->nom }}</td>
-                                        <td>{{ $personatge->raza->nom ?? 'Sense raza'}}</td>
+                                        <td>{{ $personatge->raza->nom ?? 'Sense raza' }}</td>
                                         <td>{{ $personatge->nivell }}</td>
+                                        
                                         <td>{{ $personatge->classe->nom ?? 'Sense classe' }}</td>
+                                        <td>{{ $personatge->manual->nom ?? 'Sense videojoc' }}</td>
                                         <td>
                                             @if($personatge->imatge)
                                                 <img src="{{ $personatge->imatge }}" alt="{{ $personatge->nom }}" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
@@ -45,17 +48,41 @@
                                             @endif
                                         </td>
                                         <td class="d-flex justify-content-around">
-                                            <a href="{{ route('personatges.edit', $personatge->id) }}" class="btn btn-warning btn-sm m-1">
-                                                <i class="fa fa-edit"></i> Editar
-                                            </a>
-                                            <form action="{{ route('personatges.destroy', $personatge->id) }}" method="POST" 
-                                                  onsubmit="return confirm('Estàs segur que vols eliminar aquest personatge?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm m-1">
-                                                    <i class="fa fa-trash"></i> Eliminar
-                                                </button>
-                                            </form>
+                                            @if($personatge->campanya)
+                                                {{-- Si el personaje está en una campaña, solo el DM puede modificarlo --}}
+                                                @if($personatge->campanya->user_id === auth()->id() || auth()->user()->tipus_usuari === 'admin')
+                                                    <a href="{{ route('personatges.edit', $personatge->id) }}" class="btn btn-warning btn-sm m-1">
+                                                        <i class="fa fa-edit"></i> Editar
+                                                    </a>
+                                                    <form action="{{ route('personatges.destroy', $personatge->id) }}" method="POST" 
+                                                          onsubmit="return confirm('Estàs segur que vols eliminar aquest personatge?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm m-1">
+                                                            <i class="fa fa-trash"></i> Eliminar
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                    <span class="text-muted">Sense permisos</span>
+                                                @endif
+                                            @else
+                                                {{-- Si el personaje no está en una campaña, solo el propietario puede modificarlo --}}
+                                                @if($personatge->user_id === auth()->id() || auth()->user()->tipus_usuari === 'admin')
+                                                    <a href="{{ route('personatges.edit', $personatge->id) }}" class="btn btn-warning btn-sm m-1">
+                                                        <i class="fa fa-edit"></i> Editar
+                                                    </a>
+                                                    <form action="{{ route('personatges.destroy', $personatge->id) }}" method="POST" 
+                                                          onsubmit="return confirm('Estàs segur que vols eliminar aquest personatge?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm m-1">
+                                                            <i class="fa fa-trash"></i> Eliminar
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                    <span class="text-muted">Sense permisos</span>
+                                                @endif
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach

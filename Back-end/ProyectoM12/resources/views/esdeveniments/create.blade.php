@@ -31,18 +31,7 @@
                         <a href="{{ route('esdeveniments.index') }}" class="btn btn-secondary">Cancel·lar</a>
                     </form>
 
-                    <form action="{{ route('esdeveniments.inscribirPersonatge', $esdeveniment->id) }}" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <label for="personatge_id">Selecciona un personatge</label>
-                            <select name="personatge_id" id="personatge_id" class="form-control">
-                                @foreach($personatges as $personatge)
-                                    <option value="{{ $personatge->id }}">{{ $personatge->nom }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-2">Inscriure Personatge</button>
-                    </form>
+                    
                 </div>
             </div>
         </div>
