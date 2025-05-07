@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class EsdevenimentController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth');
+    }
     public function index()
     {
         $esdeveniments = Esdeveniment::all();
@@ -16,6 +20,9 @@ class EsdevenimentController extends Controller
 
     public function create()
     {
+        if (Auth::user()->tipus_usuari !== 'admin' && Auth::user()->tipus_usuari !== 'dm'){
+            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per crear esdeveniments.');
+        }
         return view('esdeveniments.create');
     }
 
@@ -46,6 +53,13 @@ class EsdevenimentController extends Controller
 
     public function edit(Esdeveniment $esdeveniment)
     {
+        if (Auth::user()->tipus_usuari === 'dm' && $esdeveniment->user_id !== Auth::id()) {
+            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per editar aquest esdeveniment.');
+        }
+    
+        if (Auth::user()->tipus_usuari !== 'admin' && Auth::user()->tipus_usuari !== 'dm') {
+            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per editar esdeveniments.');
+        }
         return view('esdeveniments.edit', compact('esdeveniment'));
     }
 
@@ -70,6 +84,13 @@ class EsdevenimentController extends Controller
 
     public function destroy(Esdeveniment $esdeveniment)
     {
+        if (Auth::user()->tipus_usuari === 'dm' && $esdeveniment->user_id !== Auth::id()) {
+            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per eliminar aquest esdeveniment.');
+        }
+    
+        if (Auth::user()->tipus_usuari !== 'admin' && Auth::user()->tipus_usuari !== 'dm') {
+            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per eliminar esdeveniments.');
+        }
         $esdeveniment->delete();
         return redirect()->route('esdeveniments.index')->with('success', 'Esdeveniment eliminat!');
     }

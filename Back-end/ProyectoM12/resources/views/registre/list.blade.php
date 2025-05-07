@@ -7,7 +7,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Llista de Registres</span>
-                    <a href="{{ route('registre_new') }}" class="btn btn-primary btn-sm">Nou Registre</a>
+                    @if (Auth::user() && Auth::user()->tipus_usuari === 'dm')
+                        <a href="{{ route('registre_new') }}" class="btn btn-primary btn-sm">Nou Registre</a>
+                    @endif    
                 </div>
 
                 <div class="card-body">
@@ -16,7 +18,11 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
+                    @if (session('error'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     @if(count($registres) > 0)
                         <table class="table table-bordered table-hover">
                             <thead class="table-dark">
@@ -25,7 +31,9 @@
                                     <th scope="col">Títol</th>
                                     <th scope="col">Descripció</th>
                                     <th scope="col">Data de creació</th>
-                                    <th scope="col">Accions</th>
+                                    @if (Auth::user() && Auth::user()->tipus_usuari === 'dm')
+                                        <th scope="col">Accions</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -35,6 +43,7 @@
                                     <td>{{ $registre->titol }}</td>
                                     <td>{{ Str::limit($registre->descripcio, 100) }}</td>
                                     <td>{{ $registre->created_at->format('d/m/Y H:i') }}</td>
+                                    @if (Auth::user() && Auth::user()->tipus_usuari === 'dm')
                                     <td class="d-flex justify-content-around">
                                         <a href="{{ route('registre_edit', $registre->id) }}" class="btn btn-warning btn-sm me-2">
                                             <i class="fa fa-edit"></i> Editar
@@ -49,6 +58,7 @@
                                             </button>
                                         </form>
                                     </td>
+                                    @endif
                                 </tr>
                                 @endforeach
                             </tbody>
