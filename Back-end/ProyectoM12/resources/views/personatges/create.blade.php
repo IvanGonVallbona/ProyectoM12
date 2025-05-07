@@ -64,23 +64,10 @@
                                 <label for="imatge">Imatge</label>
                                 <input type="file" name="imatge" id="imatge" class="form-control">
                             </div>
-<<<<<<< HEAD
+
                             <input type="hidden" name="campanya_id" value="">
 
-||||||| 7e871a7
-                            
-=======
-                            <div class="form-group">
-                                <label for="joc_id">Joc</label>
-                                <select name="joc_id" id="joc_id" class="form-control" required>
-                                    <option value="" disabled selected>Selecciona un joc</option>
-                                    @foreach($manuals as $manual)
-                                        <option value="{{ $manual->id }}">{{ $manual->nom }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            
->>>>>>> 74c3b8efa85022dd06f9fe54099bc26e031270d3
+
                             <button type="submit" class="btn btn-primary my-3">Guardar</button>
                             <a href="{{ route('personatges.index') }}" class="btn btn-secondary">Cancel·lar</a>
                         </form>
