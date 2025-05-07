@@ -29,6 +29,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary my-3">Guardar</button>
                         <a href="{{ route('esdeveniments.index') }}" class="btn btn-secondary">Cancel·lar</a>
+
                     </form>                  
                 </div>
             </div>
