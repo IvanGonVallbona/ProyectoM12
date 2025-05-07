@@ -23,7 +23,7 @@
                                 <tr>
                                     <th scope="col">Nom</th>
                                     <th scope="col">Descripció</th>
-                                    <th scope="col">Data de creació</th>
+                                    <th scope="col">Joc</th>
                                     <th scope="col">Accions</th>
                                 </tr>
                             </thead>
@@ -32,7 +32,7 @@
                                 <tr>
                                     <td>{{ $classe->nom }}</td>
                                     <td>{{ $classe->descripcio }}</td>
-                                    <td>{{ $classe->created_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ $classe->manual->nom ?? 'Sense joc' }}</td>
                                     <td class="d-flex justify-content-around">
                                         <a href="{{ route('classe_edit', $classe->id) }}" class="btn btn-warning btn-sm">
                                             <i class="fa fa-edit"></i> Editar

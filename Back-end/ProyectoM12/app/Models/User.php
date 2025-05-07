@@ -57,12 +57,12 @@ class User extends Authenticatable
         return $this->hasMany(Campanya::class);
     }
 
-    public function esdevenimentsCreats()
+    public function esdeveniments()
     {
         return $this->hasMany(Esdeveniment::class);
     }
 
-    public function esdevenimentsParticipats()
+    public function esdevenimentsUser()
     {
         return $this->belongsToMany(Esdeveniment::class, 'esdeveniment_user');
     }

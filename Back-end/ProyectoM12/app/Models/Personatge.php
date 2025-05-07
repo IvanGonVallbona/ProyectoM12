@@ -6,16 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Personatge extends Model
 {
-    protected $fillable = [
-        'nom',
-        'nivell',
-        'classe_id',
-        'raza_id',
-        'user_id',
-        'campanya_id',
-        'joc_id',
-        'imatge',
-    ];
+    protected $fillable = ['nom', 'nivell', 'classe_id', 'raza_id', 'user_id', 'campanya_id', 'imatge', 'joc_id'];
+
 
     protected $casts = [
         'nivell' => 'integer',
