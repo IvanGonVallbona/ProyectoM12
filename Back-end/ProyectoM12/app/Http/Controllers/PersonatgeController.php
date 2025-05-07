@@ -34,11 +34,13 @@ class PersonatgeController extends Controller
         $manuals = Manual::all();
         $classes = Classe::all();
         $razas = Raza::all();
+        $manuals = \App\Models\Manual::all(); 
         
         return view('personatges.create', [
             'jocs' => $manuals,
             'classes' => $classes,
             'razas' => $razas,
+            'manuals' => $manuals,
         ]);
     }
 
@@ -52,6 +54,7 @@ class PersonatgeController extends Controller
             'joc_id' => 'required|exists:manuals,id',
             'user_id' => 'required|exists:users,id',
             'campanya_id' => 'nullable|exists:campanyes,id',
+            'joc_id' => 'required|exists:manuals,id',
             'imatge' => 'nullable|image|max:2048',
         ]);
 
@@ -60,9 +63,11 @@ class PersonatgeController extends Controller
             $extension = $file->getClientOriginalExtension();
             $filename = Str::slug($request->nom) . '_' . uniqid() . '.' . $extension;
 
+            // Ruta relativa a la carpeta public
             $rutaImatges = 'uploads/personatges';
             $file->move(public_path($rutaImatges), $filename);
 
+            // Guardar la ruta en la base de datos
             $validated['imatge'] = $rutaImatges . '/' . $filename;
         }
 
@@ -90,11 +95,13 @@ class PersonatgeController extends Controller
         $manuals = Manual::all();
         $classes = Classe::all();
         $razas = Raza::all();
+        $manuals = \App\Models\Manual::all(); 
 
         return view('personatges.edit', [
             'jocs' => $manuals,
             'classes' => $classes,
             'razas' => $razas,
+            'manuals' => $manuals,
             'personatge' => $personatge,
         ]);
     }
@@ -122,24 +129,32 @@ class PersonatgeController extends Controller
             'raza_id' => 'required|exists:razas,id',
             'joc_id' => 'required|exists:manuals,id',
             'user_id' => 'required|exists:users,id',
+            'joc_id' => 'required|exists:manuals,id',
             'campanya_id' => 'nullable|exists:campanyes,id',
             'imatge' => 'nullable|image|max:2048',
         ]);
 
+        // Comprovar si hi ha un fitxer introduït
         if ($request->file('imatge')) {
+            // Eliminar la imatge anterior si existeix
             if ($personatge->imatge && file_exists(public_path($personatge->imatge))) {
                 unlink(public_path($personatge->imatge));
             }
 
+            // Guardar la nova imatge
             $file = $request->file('imatge');
             $extension = $file->getClientOriginalExtension();
             $filename = Str::slug($request->nom) . '_' . uniqid() . '.' . $extension;
 
+            // Ruta relativa a la carpeta public
             $rutaImatges = 'uploads/personatges';
             $file->move(public_path($rutaImatges), $filename);
 
+            // Guardar la ruta en la base de datos
             $validated['imatge'] = $rutaImatges . '/' . $filename;
         }
+
+        // Actualitzar el registre del personatge
         $personatge->update($validated);
 
         return redirect()->route('personatges.index')->with('success', 'Personatge actualitzat correctament!');
@@ -164,7 +179,7 @@ class PersonatgeController extends Controller
         if ($personatge->imatge && file_exists(public_path($personatge->imatge))) {
             unlink(public_path($personatge->imatge));
         }
-
+        // Eliminar el registre del personatge
         $personatge->delete();
 
         return redirect()->route('personatges.index')->with('success', 'Personatge eliminat correctament!');

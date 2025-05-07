@@ -39,7 +39,7 @@
                                         <td>{{ $personatge->nivell }}</td>
                                         
                                         <td>{{ $personatge->classe->nom ?? 'Sense classe' }}</td>
-                                        <td>{{ $personatge->manual->nom ?? 'Sense videojoc' }}</td>
+                                        <td>{{ $personatge->manual->nom ?? 'Sense joc' }}</td> 
                                         <td>
                                             @if($personatge->imatge)
                                                 <img src="{{ $personatge->imatge }}" alt="{{ $personatge->nom }}" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">

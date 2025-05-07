@@ -60,6 +60,7 @@
                                 <input type="number" name="nivell" id="nivell" class="form-control" value="{{ old('nivell', $personatge->nivell) }}" required>
                             </div>
 
+
                             <div class="form-group">
                                 <label for="imatge">Imatge</label>
                                 @if($personatge->imatge)
@@ -85,6 +86,7 @@
         </div>
     @endauth
 </div>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

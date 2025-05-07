@@ -21,12 +21,14 @@ class CampanyaController extends Controller
                 'nom' => 'required|string|max:255',
                 'descripcio' => 'required|string',
                 'estat' => 'required|string|max:100',
+                'joc_id' => 'required|exists:manuals,id', 
             ]);
             
             $campanya = new Campanya();
             $campanya->nom = $request->nom;
             $campanya->descripcio = $request->descripcio;
             $campanya->estat = $request->estat;
+            $campanya->joc_id = $request->joc_id; 
             $campanya->user_id = Auth::id() ?? $request->user_id;
             $campanya->save();
             
@@ -34,7 +36,8 @@ class CampanyaController extends Controller
                 ->with('status', 'Nova campanya "' . $campanya->nom . '" creada!');
         }
         
-        return view('campanya.new');
+        $manuals = \App\Models\Manual::all(); 
+        return view('campanya.new', ['manuals' => $manuals]);
     }
 
     public function edit(Request $request, $id)
@@ -46,11 +49,13 @@ class CampanyaController extends Controller
                 'nom' => 'required|string|max:255',
                 'descripcio' => 'required|string',
                 'estat' => 'required|string|max:100',
+                'joc_id' => 'required|exists:manuals,id', 
             ]);
             
             $campanya->nom = $request->nom;
             $campanya->descripcio = $request->descripcio;
             $campanya->estat = $request->estat;
+            $campanya->joc_id = $request->joc_id; 
             $campanya->user_id = $request->user_id;
             $campanya->save();
             
@@ -58,7 +63,8 @@ class CampanyaController extends Controller
                 ->with('status', 'Campanya "' . $campanya->nom . '" actualitzada!');
         }
         
-        return view('campanya.edit', ['campanya' => $campanya]);
+        $manuals = \App\Models\Manual::all(); 
+        return view('campanya.edit', ['campanya' => $campanya, 'manuals' => $manuals]);
     }
 
     public function delete($id)
