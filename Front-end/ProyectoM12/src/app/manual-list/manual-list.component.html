@@ -1,0 +1,33 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Llistat de manuals
+    </div>
+    <div *ngIf="manuals.length == 0">
+        <h4>No hi ha videojocs</h4>
+    </div>
+    <div *ngIf="manuals.length > 0" class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Tipus</th>
+                    <th>Descripcio</th>
+                    <th>Jugabilidad</th>
+                    <th>Accions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let manual of manuals">
+                    <td>{{manual.nom}}</td>
+                    <td>{{manual.tipus}}</td>
+                    <td>{{manual.descripcio}}</td>
+                    <td>{{manual.jugabilidad}}</td>
+                    <td>
+                        <button [routerLink]="['/videojoc-edit', manual.id]" class="btn btn-primary">Editar</button>
+                        <button (click)="eliminarManual(manual.id)" class="btn btn-danger">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

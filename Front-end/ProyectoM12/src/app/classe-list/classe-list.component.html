@@ -1,0 +1,31 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Llistat de classes
+    </div>
+    <div *ngIf="classes.length == 0">
+        <h4>No hi ha videojocs</h4>
+    </div>
+    <div *ngIf="classes.length > 0" class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Descripció</th>
+                    <th>Joc</th>
+                    <th>Accions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let classe of classes">
+                    <td>{{classe.nom}}</td>
+                    <td>{{classe.descripcio}}</td>
+                    <td>{{classe.manual.nom}}</td>
+                    <td>
+                        <button [routerLink]="['/videojoc-edit', classe.id]" class="btn btn-primary">Editar</button>
+                        <button (click)="eliminarClasse(classe.id)" class="btn btn-danger">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
