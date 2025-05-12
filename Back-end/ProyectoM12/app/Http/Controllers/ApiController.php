@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use App\Models\Campanya;
 use App\Models\Classe;
 use App\Models\Esdeveniment;
@@ -16,265 +17,211 @@ use App\Models\User;
 
 class ApiController extends Controller
 {
-    //MANUALS
+    // MANUALS
 
     public function listManual()
     {
         $manuals = Manual::all();
 
         foreach ($manuals as $manual) {
-            if ($manual->imatge) {
-                $manual->imatge = asset('uploads/imatges_manuals/' . $manual->imatge);
-            } else {
-                $manual->imatge = null;
-            }
+            $manual->imatge = $manual->imatge 
+                ? asset('uploads/imatges_manuals/' . $manual->imatge) 
+                : null;
         }
-        return view('manual.list', ['manuals' => $manuals]);
+
+        return response()->json($manuals);
+    }
+
+    public function getManual($id){
+        $manual = Manual::find($id);
+        return response()->json($manual);
     }
 
     public function newManual(Request $request)
     {
-        if (Auth::user()->tipus_usuari !== 'admin'){
-            return redirect()->route('manual_list')->with('error', 'No tens permisos per crear manuals.');
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'tipus' => 'required|string|max:100',
+            'descripcio' => 'required|string',
+            'jugabilidad' => 'required|string',
+            'imatge' => 'nullable|image|max:2048',
+        ]);
+
+        $manual = new Manual();
+        $manual->nom = $request->nom;
+        $manual->tipus = $request->tipus;
+        $manual->descripcio = $request->descripcio;
+        $manual->jugabilidad = $request->jugabilidad;
+
+        if ($request->hasFile('imatge')) {
+            $file = $request->file('imatge');
+            $filename = uniqid() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/imatges_manuals'), $filename);
+            $manual->imatge = $filename;
         }
-        if ($request->isMethod('post')) {
-            $request->validate([
-                'nom' => 'required|string|max:255',
-                'tipus' => 'required|string|max:100',
-                'descripcio' => 'required|string',
-                'jugabilidad' => 'required|string',
-                'imatge' => 'nullable|image|max:2048', 
-            ]);
-            
-            $manual = new Manual();
-            $manual->nom = $request->nom;
-            $manual->tipus = $request->tipus;
-            $manual->descripcio = $request->descripcio;
-            $manual->jugabilidad = $request->jugabilidad;
 
-            if ($request->hasFile('imatge')) {
-                $file = $request->file('imatge');
-                $filename = uniqid() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/imatges_manuals'), $filename);
-                $manual->imatge = $filename;
-            }
+        $manual->save();
 
-
-            $manual->save();
-            
-            return redirect()->route('manual_list')
-                ->with('status', 'Nou manual "' . $manual->nom . '" creat!');
-        }
-        
-        return view('manual.new');
+        return response()->json(['message' => 'Manual creat correctament!', 'manual' => $manual], 201);
     }
 
     public function editManual(Request $request, $id)
     {
-        if (Auth::user()->tipus_usuari !== 'admin') {
-            return redirect()->route('manual_list')->with('error', 'No tens permisos per editar manuals.');
-        }
         $manual = Manual::findOrFail($id);
-        
-        if ($request->isMethod('post')) {
-            $request->validate([
-                'nom' => 'required|string|max:255',
-                'tipus' => 'required|string|max:100',
-                'descripcio' => 'required|string',
-                'jugabilidad' => 'required|string',
-                'imatge' => 'nullable|image|max:2048',
-            ]);
-            
-            $manual->nom = $request->nom;
-            $manual->tipus = $request->tipus;
-            $manual->descripcio = $request->descripcio;
-            $manual->jugabilidad = $request->jugabilidad;
 
-            if ($request->hasFile('imatge')) {
-                if ($manual->imatge && file_exists(public_path('uploads/imatges_manuals/' . $manual->imatge))) {
-                    unlink(public_path('uploads/imatges_manuals/' . $manual->imatge));
-                }
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'tipus' => 'required|string|max:100',
+            'descripcio' => 'required|string',
+            'jugabilidad' => 'required|string',
+            'imatge' => 'nullable|image|max:2048',
+        ]);
 
-                $file = $request->file('imatge');
-                $filename = uniqid() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/imatges_manuals'), $filename);
-                $manual->imatge = $filename;
+        $manual->nom = $request->nom;
+        $manual->tipus = $request->tipus;
+        $manual->descripcio = $request->descripcio;
+        $manual->jugabilidad = $request->jugabilidad;
+
+        if ($request->hasFile('imatge')) {
+            if ($manual->imatge && file_exists(public_path('uploads/imatges_manuals/' . $manual->imatge))) {
+                unlink(public_path('uploads/imatges_manuals/' . $manual->imatge));
             }
 
-            $manual->save();
-            
-            return redirect()->route('manual_list')
-                ->with('status', 'Manual "' . $manual->nom . '" actualitzat!');
+            $file = $request->file('imatge');
+            $filename = uniqid() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/imatges_manuals'), $filename);
+            $manual->imatge = $filename;
         }
-        
-        return view('manual.edit', ['manual' => $manual]);
+
+        $manual->save();
+
+        return response()->json(['message' => 'Manual actualitzat correctament!', 'manual' => $manual]);
     }
 
     public function deleteManual($id)
     {
-
-        if (Auth::user()->tipus_usuari !== 'admin') {
-            return redirect()->route('manual_list')->with('error', 'No tens permisos per eliminar manuals.');
-        }
         $manual = Manual::findOrFail($id);
-        
-        $nom = $manual->nom;
-        $rutaImatge = public_path('uploads/imatges_manuals/' . $manual->imatge);
 
-        if ($manual->imatge && File::exists($rutaImatge)) {
-        File::delete($rutaImatge);
+        if ($manual->imatge && File::exists(public_path('uploads/imatges_manuals/' . $manual->imatge))) {
+            File::delete(public_path('uploads/imatges_manuals/' . $manual->imatge));
         }
-        
+
         $manual->delete();
-        
-        return redirect()->route('manual_list')
-            ->with('status', 'Manual "' . $nom . '" eliminat correctament!');
+
+        return response()->json(['message' => 'Manual eliminat correctament!']);
     }
 
-
-    // REGISTRE SESSIONS
+    // REGISTRES
 
     public function listRegistre()
     {
         $registres = Registre::all();
-        return view('registre.list', ['registres' => $registres]);
+        return response()->json($registres);
+    }
+
+    public function getRegistre($id){
+        $registre = Registre::find($id);
+        return response()->json($registre);
     }
 
     public function newRegistre(Request $request)
     {
-        if (Auth::user()->tipus_usuari !== 'dm') {
-            return redirect()->route('registre_list')->with('error', 'No tens permisos per crear registres.');
-        }
+        $request->validate([
+            'titol' => 'required|string|max:255',
+            'descripcio' => 'required|string',
+        ]);
 
-        if ($request->isMethod('post')) {
-            $request->validate([
-                'titol' => 'required|string|max:255',
-                'descripcio' => 'required|string',
-            ]);
-            
-            $registre = new Registre();
-            $registre->titol = $request->titol;
-            $registre->descripcio = $request->descripcio;
-            $registre->save();
-            
-            return redirect()->route('registre_list')
-                ->with('status', 'Nou registre "' . $registre->titol . '" creat!');
-        }
-        
-        return view('registre.new');
+        $registre = Registre::create($request->all());
+
+        return response()->json(['message' => 'Registre creat correctament!', 'registre' => $registre], 201);
     }
 
     public function editRegistre(Request $request, $id)
     {
-        if (Auth::user()->tipus_usuari !== 'dm') {
-            return redirect()->route('registre_list')->with('error', 'No tens permisos per editar registres.');
-        }
         $registre = Registre::findOrFail($id);
-        
-        if ($request->isMethod('post')) {
-            $request->validate([
-                'titol' => 'required|string|max:255',
-                'descripcio' => 'required|string',
-            ]);
-            
-            $registre->titol = $request->titol;
-            $registre->descripcio = $request->descripcio;
-            $registre->save();
-            
-            return redirect()->route('registre_list')
-                ->with('status', 'Registre "' . $registre->titol . '" actualitzat!');
-        }
-        
-        return view('registre.edit', ['registre' => $registre]);
+
+        $request->validate([
+            'titol' => 'required|string|max:255',
+            'descripcio' => 'required|string',
+        ]);
+
+        $registre->update($request->all());
+
+        return response()->json(['message' => 'Registre actualitzat correctament!', 'registre' => $registre]);
     }
 
     public function deleteRegistre($id)
     {
-        if (Auth::user()->tipus_usuari !== 'dm') {
-            return redirect()->route('registre_list')->with('error', 'No tens permisos per eliminar registres.');
-        }
         $registre = Registre::findOrFail($id);
-        
-        $titol = $registre->titol;
-        
         $registre->delete();
-        
-        return redirect()->route('registre_list')
-            ->with('status', 'Registre "' . $titol . '" eliminat correctament!');
+
+        return response()->json(['message' => 'Registre eliminat correctament!']);
     }
-    
 
     // CLASSES
 
     public function listClasses()
     {
         $classes = Classe::with('manual')->get();
-        return view('classe.list', compact('classes'));
+        return response()->json($classes);
+    }
+
+    public function getClasse($id){
+        $classe = Classe::find($id);
+        return response()->json($classe);
     }
 
     public function newClasse(Request $request)
     {
-        $manuals = Manual::all();
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'descripcio' => 'required|string',
+            'joc_id' => 'required|exists:manuals,id',
+        ]);
 
-        if ($request->isMethod('post')) {
-            $request->validate([
-                'nom' => 'required|string|max:255',
-                'descripcio' => 'required|string',
-                'joc_id' => 'required|exists:manuals,id',
-            ]);
+        $classe = Classe::create($request->all());
 
-            Classe::create($request->all());
-            return redirect()->route('classe_list')->with('status', 'Classe creada correctament.');
-        }
-
-        return view('classe.new', compact('manuals'));
+        return response()->json(['message' => 'Classe creada correctament!', 'classe' => $classe], 201);
     }
 
     public function editClasse(Request $request, $id)
     {
         $classe = Classe::findOrFail($id);
-        $manuals = Manual::all();
 
-        if ($request->isMethod('post')) {
-            $request->validate([
-                'nom' => 'required|string|max:255',
-                'descripcio' => 'required|string',
-                'joc_id' => 'required|exists:manuals,id',
-            ]);
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'descripcio' => 'required|string',
+            'joc_id' => 'required|exists:manuals,id',
+        ]);
 
-            $classe->update($request->all());
-            return redirect()->route('classe_list')->with('status', 'Classe actualitzada correctament.');
-        }
+        $classe->update($request->all());
 
-        return view('classe.edit', compact('classe', 'manuals'));
+        return response()->json(['message' => 'Classe actualitzada correctament!', 'classe' => $classe]);
     }
 
     public function deleteClasse($id)
     {
         $classe = Classe::findOrFail($id);
-
-        $nom = $classe->nom;
-        
         $classe->delete();
 
-        return redirect()->route('classe_list')->with('status', 'Classe '.$nom.' eliminada!');
+        return response()->json(['message' => 'Classe eliminada correctament!']);
     }
 
-    //RAZAS
+    // RAZAS
 
     public function indexRaza()
     {
         $razas = Raza::with('manual')->get();
-        return view('razas.index', compact('razas'));
+        return response()->json($razas);
     }
 
-    public function createRaza()
+    public function getRaza($id)
     {
-        $manuals = Manual::all();
-        return view('razas.create', compact('manuals'));
+        $raza = Raza::find($id);
+        return response()->json($raza);
     }
 
-    public function storeRaza(Request $request)
+    public function createRaza(Request $request)
     {
         $request->validate([
             'nom' => 'required|string|max:255',
@@ -282,17 +229,12 @@ class ApiController extends Controller
             'joc_id' => 'required|exists:manuals,id',
         ]);
 
-        Raza::create($request->all());
-        return redirect()->route('razas.index')->with('success', 'Raza creada correctament.');
+        $raza = Raza::create($request->all());
+
+        return response()->json(['message' => 'Raza creada correctament!', 'raza' => $raza], 201);
     }
 
-    public function editRaza(Raza $raza)
-    {
-        $manuals = Manual::all();
-        return view('razas.edit', compact('raza', 'manuals'));
-    }
-
-    public function updateRaza(Request $request, Raza $raza)
+    public function editRaza(Request $request, Raza $raza)
     {
         $request->validate([
             'nom' => 'required|string|max:255',
@@ -301,35 +243,32 @@ class ApiController extends Controller
         ]);
 
         $raza->update($request->all());
-        return redirect()->route('razas.index')->with('success', 'Raza actualitzada correctament.');
+
+        return response()->json(['message' => 'Raza actualitzada correctament!', 'raza' => $raza]);
     }
 
     public function destroyRaza(Raza $raza)
     {
         $raza->delete();
-        return redirect()->route('razas.index')->with('success', 'Raza eliminada correctament.');
+
+        return response()->json(['message' => 'Raza eliminada correctament!']);
     }
 
-    // ESDEVENIMENT
+    // ESDEVENIMENTS
 
-    public function __construct(){
-        $this->middleware('auth');
-    }
-    public function indexESDEVENIMENT()
+    public function indexEsdeveniments()
     {
         $esdeveniments = Esdeveniment::all();
-        return view('esdeveniments.index', compact('esdeveniments'));
+        return response()->json($esdeveniments);
     }
 
-    public function createESDEVENIMENT()
+    public function getEsdeveniment($id)
     {
-        if (Auth::user()->tipus_usuari !== 'admin' && Auth::user()->tipus_usuari !== 'dm'){
-            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per crear esdeveniments.');
-        }
-        return view('esdeveniments.create');
+        $esdeveniment = Esdeveniment::find($id);
+        return response()->json($esdeveniment);
     }
 
-    public function storeESDEVENIMENT(Request $request)
+    public function createEsdeveniment(Request $request)
     {
         $request->validate([
             'nom' => 'required|string|max:255',
@@ -338,35 +277,18 @@ class ApiController extends Controller
             'tipus' => 'required|string|max:255',
         ]);
 
-        Esdeveniment::create([
+        $esdeveniment = Esdeveniment::create([
             'nom' => $request->nom,
             'descripcio' => $request->descripcio,
             'data' => $request->data,
             'tipus' => $request->tipus,
-            'user_id' => auth()->id(), 
+            'user_id' => auth()->id(),
         ]);
 
-        return redirect()->route('esdeveniments.index')->with('status', 'Esdeveniment creat correctament!');
+        return response()->json(['message' => 'Esdeveniment creat correctament!', 'esdeveniment' => $esdeveniment], 201);
     }
 
-    public function showESDEVENIMENT(Esdeveniment $esdeveniment)
-    {
-        return view('esdeveniments.show', compact('esdeveniment'));
-    }
-
-    public function editESDEVENIMENT(Esdeveniment $esdeveniment)
-    {
-        if (Auth::user()->tipus_usuari === 'dm' && $esdeveniment->user_id !== Auth::id()) {
-            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per editar aquest esdeveniment.');
-        }
-    
-        if (Auth::user()->tipus_usuari !== 'admin' && Auth::user()->tipus_usuari !== 'dm') {
-            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per editar esdeveniments.');
-        }
-        return view('esdeveniments.edit', compact('esdeveniment'));
-    }
-
-    public function updateESDEVENIMENT(Request $request, Esdeveniment $esdeveniment)
+    public function editEsdeveniment(Request $request, Esdeveniment $esdeveniment)
     {
         $request->validate([
             'nom' => 'required|string|max:255',
@@ -375,27 +297,16 @@ class ApiController extends Controller
             'tipus' => 'required|string|max:255',
         ]);
 
-        $esdeveniment->update([
-            'nom' => $request->nom,
-            'descripcio' => $request->descripcio,
-            'data' => $request->data,
-            'tipus' => $request->tipus,
-        ]);
+        $esdeveniment->update($request->all());
 
-        return redirect()->route('esdeveniments.index')->with('status', 'Esdeveniment actualitzat correctament!');
+        return response()->json(['message' => 'Esdeveniment actualitzat correctament!', 'esdeveniment' => $esdeveniment]);
     }
 
-    public function destroyESDEVENIMENT(Esdeveniment $esdeveniment)
+    public function destroyEsdeveniment(Esdeveniment $esdeveniment)
     {
-        if (Auth::user()->tipus_usuari === 'dm' && $esdeveniment->user_id !== Auth::id()) {
-            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per eliminar aquest esdeveniment.');
-        }
-    
-        if (Auth::user()->tipus_usuari !== 'admin' && Auth::user()->tipus_usuari !== 'dm') {
-            return redirect()->route('esdeveniments.index')->with('error', 'No tens permisos per eliminar esdeveniments.');
-        }
         $esdeveniment->delete();
-        return redirect()->route('esdeveniments.index')->with('success', 'Esdeveniment eliminat!');
+
+        return response()->json(['message' => 'Esdeveniment eliminat correctament!']);
     }
 
     public function inscriureUsuari(Request $request, Esdeveniment $esdeveniment)
@@ -404,12 +315,11 @@ class ApiController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        // Inscriure l'usuari només si no està inscrit
         if (!$esdeveniment->participants->contains($request->user_id)) {
             $esdeveniment->participants()->attach($request->user_id);
         }
 
-        return redirect()->route('esdeveniments.index')->with('status', 'Usuari inscrit correctament!');
+        return response()->json(['message' => 'Usuari inscrit correctament!']);
     }
 
     public function desinscriureUsuari(Request $request, Esdeveniment $esdeveniment)
@@ -418,12 +328,11 @@ class ApiController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        // Desinscriure l'usuari només si està inscrit
         if ($esdeveniment->participants->contains($request->user_id)) {
             $esdeveniment->participants()->detach($request->user_id);
         }
 
-        return redirect()->route('esdeveniments.index')->with('status', 'Usuari desinscrit correctament!');
+        return response()->json(['message' => 'Usuari desinscrit correctament!']);
     }
 
     // PERSONATGES
@@ -431,29 +340,16 @@ class ApiController extends Controller
     public function indexPersonatge()
     {
         $personatges = Personatge::all();
-        return view('personatges.index', compact('personatges'));
+        return response()->json($personatges);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function createPersonatge()
+    public function getPersonatge($id)
     {
-        $classes = Classe::all();
-        $razas = Raza::all();
-        $manuals = \App\Models\Manual::all(); 
-        
-        return view('personatges.create', [
-            'classes' => $classes,
-            'razas' => $razas,
-            'manuals' => $manuals,
-        ]);
+        $personatge = Personatge::find($id);
+        return response()->json($personatge);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function storePersonatge(Request $request)
+    public function createPersonatge(Request $request)
     {
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
@@ -477,42 +373,12 @@ class ApiController extends Controller
             $validated['imatge'] = $rutaImatges . '/' . $filename;
         }
 
-        Personatge::create($validated);
+        $personatge = Personatge::create($validated);
 
-        return redirect()->route('personatges.index')->with('status', 'Personatge creat correctament!');
+        return response()->json(['message' => 'Personatge creat correctament!', 'personatge' => $personatge], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function showPersonatge(Personatge $personatge)
-    {
-        return view('personatges.show', compact('personatge'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function editPersonatge(Personatge $personatge)
-    {
-        $classes = Classe::all();
-        $razas = Raza::all();
-        $manuals = \App\Models\Manual::all(); 
-
-        return view('personatges.edit', [
-            'classes' => $classes,
-            'razas' => $razas,
-            'manuals' => $manuals,
-            'personatge' => $personatge,
-        ]);
-    }
-
-    
-    
-    /**
-     * Update the specified resource in storage.
-     */
-    public function updatePersonatge(Request $request, Personatge $personatge)
+    public function editPersonatge(Request $request, Personatge $personatge)
     {
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
@@ -542,19 +408,20 @@ class ApiController extends Controller
 
         $personatge->update($validated);
 
-        return redirect()->route('personatges.index')->with('status', 'Personatge actualitzat correctament!');
+        return response()->json(['message' => 'Personatge actualitzat correctament!', 'personatge' => $personatge]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroyPersonatge(Personatge $personatge)
     {
         if ($personatge->imatge && file_exists(public_path($personatge->imatge))) {
             unlink(public_path($personatge->imatge));
         }
-         $personatge->delete();
 
-        return redirect()->route('personatges.index')->with('status', 'Personatge eliminat correctament!');
+        $personatge->delete();
+
+        return response()->json(['message' => 'Personatge eliminat correctament!']);
     }
+
+
+    // CAMPANYES
 }
