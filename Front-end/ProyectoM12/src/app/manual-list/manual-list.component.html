@@ -13,7 +13,6 @@
                     <th>Tipus</th>
                     <th>Descripcio</th>
                     <th>Jugabilidad</th>
-                    <th>Accions</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,10 +21,6 @@
                     <td>{{manual.tipus}}</td>
                     <td>{{manual.descripcio}}</td>
                     <td>{{manual.jugabilidad}}</td>
-                    <td>
-                        <button [routerLink]="['/videojoc-edit', manual.id]" class="btn btn-primary">Editar</button>
-                        <button (click)="eliminarManual(manual.id)" class="btn btn-danger">Eliminar</button>
-                    </td>
                 </tr>
             </tbody>
         </table>

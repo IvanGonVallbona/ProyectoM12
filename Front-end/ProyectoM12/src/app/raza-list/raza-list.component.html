@@ -16,7 +16,6 @@
                                     <th>Nom</th>
                                     <th>Descripció</th>
                                     <th>Joc</th>
-                                    <th>Accions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -24,15 +23,6 @@
                                     <td>{{raza.nom}}</td>
                                     <td>{{raza.descripcio}}</td>
                                     <td>{{raza.manual.nom}}</td>
-                                    <td>
-                                        <button [routerLink]="['/videojoc-edit', raza.id]"
-                                            class="btn btn-sm btn-primary me-2">
-                                            <i class="fas fa-edit"></i> Editar
-                                        </button>
-                                        <button (click)="eliminarRaza(raza.id)" class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash-alt"></i> Eliminar
-                                        </button>
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
