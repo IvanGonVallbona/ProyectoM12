@@ -9,8 +9,6 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from "@angular/forms";
 import { provideHttpClient } from '@angular/common/http';
-import { ClasseCreateComponent } from './classe-create/classe-create.component';
-import { ClasseEditComponent } from './classe-edit/classe-edit.component';
 import { ManualListComponent } from './manual-list/manual-list.component';
 import { RazaListComponent } from './raza-list/raza-list.component';
 
@@ -21,8 +19,6 @@ import { RazaListComponent } from './raza-list/raza-list.component';
     NavBarComponent,
     ClasseListComponent,
     WelcomeComponent,
-    ClasseCreateComponent,
-    ClasseEditComponent,
     ManualListComponent,
     RazaListComponent,
   ],
