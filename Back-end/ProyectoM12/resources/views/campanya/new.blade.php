@@ -39,10 +39,10 @@
                             <label for="estat" class="form-label">Estat de la Campanya:</label>
                             <select name="estat" id="estat" class="form-select @error('estat') is-invalid @enderror" required>
                                 <option value="">Selecciona un estat</option>
-                                <option value="En preparació" {{ old('estat') == 'En preparació' ? 'selected' : '' }}>En preparació</option>
-                                <option value="Activa" {{ old('estat') == 'Activa' ? 'selected' : '' }}>Activa</option>
-                                <option value="Finalitzada" {{ old('estat') == 'Finalitzada' ? 'selected' : '' }}>Finalitzada</option>
-                                <option value="Cancel·lada" {{ old('estat') == 'Cancel·lada' ? 'selected' : '' }}>Cancel·lada</option>
+                                <option value="preparacio" {{ old('estat') == 'En preparació' ? 'selected' : '' }}>En preparació</option>
+                                <option value="activa" {{ old('estat') == 'Activa' ? 'selected' : '' }}>Activa</option>
+                                <option value="finalitzada" {{ old('estat') == 'Finalitzada' ? 'selected' : '' }}>Finalitzada</option>
+                                <option value="cancel·lada" {{ old('estat') == 'Cancel·lada' ? 'selected' : '' }}>Cancel·lada</option>
                             </select>
                             @error('estat')
                                 <span class="invalid-feedback" role="alert">
@@ -66,6 +66,25 @@
                             @enderror
                         </div>
 
+                        <div class="mb-3">
+                            <label for="personatges" class="form-label">Número de Jugadors:</label>
+                            <select name="personatges" id="personatges" class="form-select @error('personatges') is-invalid @enderror" required>
+                                <option value="" disabled selected>Selecciona el número de personatges</option>
+                                @for($i = 3; $i <= 6; $i++)
+                                    <option value="{{ $i }}" {{ old('personatges') == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                @endfor
+                            </select>
+                            @error('personatges')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div id="classes-container">
+                            <!-- Aquí se generarán dinámicamente los selects de clases -->
+                        </div>
+
                         <!-- Campo oculto para el user_id -->
                         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
 
@@ -78,4 +97,73 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        const numJugadorsSelect = document.getElementById('personatges');
+        const jocSelect = document.getElementById('joc_id');
+        const classesContainer = document.getElementById('classes-container');
+        const classes = <?php echo json_encode($classes); ?>;
+        
+
+        numJugadorsSelect.addEventListener('change', function () {
+            const jocId = jocSelect.value;
+
+            // Si no s'ha escollit joc, mostrar error i sortir
+            if (!jocId) {
+                classesContainer.innerHTML = '<div class="alert alert-danger">Has de seleccionar un joc abans de triar els personatges.</div>';
+                return;
+            }
+
+            const numJugadors = parseInt(this.value);
+            classesContainer.innerHTML = '';
+
+            for (let i = 1; i <= numJugadors; i++) {
+                const div = document.createElement('div');
+                div.classList.add('mb-3');
+
+                // Crear un label per al select
+                const label = document.createElement('label');
+                label.setAttribute('for', `classe_${i}`);
+                label.classList.add('form-label');
+                label.textContent = `Classe del Personatge ${i}:`;
+
+                // Crear el select
+                const select = document.createElement('select');
+                select.name = `classe_${i}`;
+                select.id = `classe_${i}`;
+                select.classList.add('form-select');
+
+                // Opció Qualsevol. Per defecte
+                const optQualsevol = document.createElement('option');
+                optQualsevol.value = "";
+                optQualsevol.selected = true;
+                optQualsevol.textContent = 'Qualsevol';
+                select.appendChild(optQualsevol);
+
+                // Afegir només les classes del joc seleccionat
+                classes.forEach(function(classe) {
+                    // Comprovar si la classe pertany al joc seleccionat
+                    if (jocId == classe.joc_id) {
+                        // Crear l'opció per a la classe
+                        const opt = document.createElement('option');
+                        opt.value = classe.id;
+                        opt.textContent = classe.nom;
+                        select.appendChild(opt);
+                    }
+                });
+                // Afegir el select i el label al div
+                div.appendChild(label);
+                div.appendChild(select);    
+                // Afegir el div al contenidor de classes
+                classesContainer.appendChild(div);
+            }
+        });
+    });
+</script>
+
+
 @endsection

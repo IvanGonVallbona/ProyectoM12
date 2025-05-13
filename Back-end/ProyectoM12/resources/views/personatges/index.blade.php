@@ -27,6 +27,7 @@
                                         <th scope="col">Nivell</th>
                                         <th scope="col">Classe</th>
                                         <th scope="col">Joc</th>
+                                        <th scope="col">Campanya</th>
                                         <th scope="col">Imatge</th>
                                         <th scope="col">Accions</th>
                                     </tr>
@@ -35,11 +36,11 @@
                                     @foreach($personatges as $personatge)
                                     <tr>
                                         <td>{{ $personatge->nom }}</td>
-                                        <td>{{ $personatge->raza->nom ?? 'Sense raza' }}</td>
+                                        <td>{{ $personatge->raza->nom ?? 'Sense raça' }}</td>
                                         <td>{{ $personatge->nivell }}</td>
-                                        
                                         <td>{{ $personatge->classe->nom ?? 'Sense classe' }}</td>
-                                        <td>{{ $personatge->manual->nom ?? 'Sense joc' }}</td> 
+                                        <td>{{ $personatge->manual->nom ?? 'Sense joc' }}</td>
+                                        <td>{{ $personatge->campanya->nom ?? 'Sense campanya' }}</td>
                                         <td>
                                             @if($personatge->imatge)
                                                 <img src="{{ $personatge->imatge }}" alt="{{ $personatge->nom }}" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
