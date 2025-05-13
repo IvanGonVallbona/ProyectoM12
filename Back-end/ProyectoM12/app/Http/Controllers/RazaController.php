@@ -53,6 +53,6 @@ class RazaController extends Controller
     public function destroy(Raza $raza)
     {
         $raza->delete();
-        return redirect()->route('razas.index')->with(key: 'success', 'Raza eliminada correctament.');
+        return redirect()->route('razas.index')->with( 'success', 'Raza eliminada correctament.');
     }
 }

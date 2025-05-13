@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             CampanyaSeeder::class,
             PersonatgeSeeder::class,
             EsdevenimentSeeder::class,
+            ClasseCampanyaSeeder::class,
         ]);
 
     }

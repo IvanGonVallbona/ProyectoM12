@@ -8,6 +8,11 @@ class Classe extends Model
 {
     protected $fillable = ['nom', 'descripcio', 'joc_id'];
 
+    public static function getName($id)
+    {
+        return self::where('id', $id)->value('nom');
+    }
+
     public function personatges()
     {
         return $this->hasMany(Personatge::class);
@@ -19,5 +24,10 @@ class Classe extends Model
     public function manual()
     {
         return $this->belongsTo(Manual::class, 'joc_id');
+    }
+
+    public function campanyes()
+    {
+        return $this->belongsToMany(Campanya::class, 'classe_campanya');
     }
 }

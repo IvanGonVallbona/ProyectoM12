@@ -36,4 +36,9 @@ class Campanya extends Model
     {
         return $this->belongsTo(Manual::class, 'joc_id');
     }
+
+    public function classes()
+    {
+        return $this->belongsToMany(Classe::class, 'classe_campanya');
+    }
 }

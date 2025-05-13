@@ -43,10 +43,10 @@ Route::get('/campanyes/list', [CampanyaController::class, 'list'])->name('campan
 Route::match(['get', 'post'], '/campanya/new', [CampanyaController::class, 'new'])->name('campanya_new');
 Route::match(['get', 'post'], '/campanya/edit/{id}', [CampanyaController::class, 'edit'])->name('campanya_edit');
 Route::delete('/campanya/delete/{id}', [CampanyaController::class, 'delete'])->name('campanya_delete');
+Route::get('/campanya/{id_campanya}/add-personatge', [CampanyaController::class, 'addPersonatge'])->name('campanya.addPersonatge');
+Route::post('/campanya/{id_campanya}/add-personatge/{id_personatge}', [CampanyaController::class, 'addPersonatgeToCampanya'])->name('campanya.addPersonatgeToCampanya');
 
-
-// REGISTRE 
-
+// REGISTRES
 Route::get('/registres/list', [RegistreController::class, 'list'])->name('registre_list');
 Route::match(['get', 'post'], '/registre/new', [RegistreController::class, 'new'])->name('registre_new');
 Route::match(['get', 'post'], '/registre/edit/{id}', [RegistreController::class, 'edit'])->name('registre_edit');
