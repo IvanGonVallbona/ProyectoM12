@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClasseEditComponent } from './classe-edit.component';
+import { RazaListComponent } from './raza-list.component';
 
-describe('ClasseEditComponent', () => {
-  let component: ClasseEditComponent;
-  let fixture: ComponentFixture<ClasseEditComponent>;
+describe('RazaListComponent', () => {
+  let component: RazaListComponent;
+  let fixture: ComponentFixture<RazaListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ClasseEditComponent]
+      declarations: [RazaListComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ClasseEditComponent);
+    fixture = TestBed.createComponent(RazaListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
