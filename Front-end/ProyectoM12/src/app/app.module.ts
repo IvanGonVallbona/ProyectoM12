@@ -12,6 +12,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { ClasseCreateComponent } from './classe-create/classe-create.component';
 import { ClasseEditComponent } from './classe-edit/classe-edit.component';
 import { ManualListComponent } from './manual-list/manual-list.component';
+import { RazaListComponent } from './raza-list/raza-list.component';
+
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { ManualListComponent } from './manual-list/manual-list.component';
     WelcomeComponent,
     ClasseCreateComponent,
     ClasseEditComponent,
-    ManualListComponent
+    ManualListComponent,
+    RazaListComponent,
   ],
   imports: [
     BrowserModule,

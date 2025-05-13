@@ -12,7 +12,6 @@
                     <th>Nom</th>
                     <th>Descripció</th>
                     <th>Joc</th>
-                    <th>Accions</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,10 +19,6 @@
                     <td>{{classe.nom}}</td>
                     <td>{{classe.descripcio}}</td>
                     <td>{{classe.manual.nom}}</td>
-                    <td>
-                        <button [routerLink]="['/videojoc-edit', classe.id]" class="btn btn-primary">Editar</button>
-                        <button (click)="eliminarClasse(classe.id)" class="btn btn-danger">Eliminar</button>
-                    </td>
                 </tr>
             </tbody>
         </table>
