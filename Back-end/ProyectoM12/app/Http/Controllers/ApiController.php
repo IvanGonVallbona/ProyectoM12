@@ -14,6 +14,7 @@ use App\Models\Personatge;
 use App\Models\Raza;
 use App\Models\Registre;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
@@ -425,6 +426,222 @@ class ApiController extends Controller
 
     // CAMPANYES
 
+    public function listCampanyes()
+    {
+        $campanyes = Campanya::with('user')->get();
+        return response()->json($campanyes);
+    }
 
-    
+    public function getCampanya($id)
+    {
+        $campanya = Campanya::findOrFail($id);
+        return response()->json($campanya);
+    }
+
+    public function createCampanya(Request $request)
+{
+    $request->validate([
+        'nom' => 'required|string|max:255',
+        'descripcio' => 'required|string',
+        'estat' => 'required|string|max:100',
+        'joc_id' => 'required|exists:manuals,id',
+        'personatges' => 'required|integer|min:3|max:6',
+        'classes' => 'nullable|array',
+        'classes.*' => 'nullable|exists:classes,id',
+    ]);
+
+    $campanya = new Campanya();
+    $campanya->nom = $request->nom;
+    $campanya->descripcio = $request->descripcio;
+    $campanya->estat = $request->estat;
+    $campanya->joc_id = $request->joc_id;
+    $campanya->user_id = Auth::id() ?? $request->user_id;
+    $campanya->personatges = $request->personatges;
+    $campanya->save();
+
+    if ($request->has('classes')) {
+        foreach ($request->classes as $classeId) {
+            DB::table('classe_campanya')->insert([
+                'campanya_id' => $campanya->id,
+                'classe_id' => $classeId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+    }
+
+    return response()->json(['message' => 'Campanya creada correctament!', 'campanya' => $campanya], 201);
+}
+
+public function deleteCampanya($id)
+{
+    $campanya = Campanya::findOrFail($id);
+    $campanya->delete();
+
+    return response()->json(['message' => 'Campanya eliminada correctament!']);
+}
+
+public function updateCampanya(Request $request, $id)
+{
+    $campanya = Campanya::findOrFail($id);
+
+    $request->validate([
+        'nom' => 'required|string|max:255',
+        'descripcio' => 'required|string',
+        'estat' => 'required|string|max:100',
+        'joc_id' => 'required|exists:manuals,id',
+        'personatges' => 'required|integer|min:3|max:6',
+        'classes' => 'nullable|array',
+        'classes.*' => 'nullable|exists:classes,id',
+    ]);
+
+    $campanya->update($request->only(['nom', 'descripcio', 'estat', 'joc_id', 'personatges']));
+
+    DB::table('classe_campanya')->where('campanya_id', $campanya->id)->delete();
+
+    if ($request->has('classes')) {
+        foreach ($request->classes as $classeId) {
+            DB::table('classe_campanya')->insert([
+                'campanya_id' => $campanya->id,
+                'classe_id' => $classeId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+    }
+
+    return response()->json(['message' => 'Campanya actualitzada correctament!', 'campanya' => $campanya]);
+}
+
+public function addPersonatgeToCampanyaApi($id_campanya, $id_personatge)
+{
+    $personatge = DB::table('personatges')->where('id', $id_personatge)->first();
+    if (!$personatge) {
+        return response()->json(['error' => 'Personatge no trobat.'], 404);
+    }
+
+    if ($personatge->campanya_id) {
+        return response()->json(['error' => 'El personatge ja està assignat a una altra campanya.'], 400);
+    }
+
+    $campanya = Campanya::findOrFail($id_campanya);
+    if (!$campanya) {
+        return response()->json(['error' => 'Campanya no trobada.'], 404);
+    }
+
+    $personatgesCount = DB::table('personatges')
+        ->where('campanya_id', $id_campanya)
+        ->count();
+    if ($personatgesCount >= $campanya->personatges) {
+        return response()->json(['error' => 'No es poden afegir més personatges a aquesta campanya.'], 400);
+    }
+
+    if ($personatge->joc_id !== $campanya->joc_id) {
+        return response()->json(['error' => 'El personatge no pertany al mateix joc que la campanya.'], 400);
+    }
+
+    DB::table('personatges')
+        ->where('id', $id_personatge)
+        ->update(['campanya_id' => $id_campanya]);
+
+    return response()->json(['message' => 'Personatge afegit a la campanya correctament!'], 200);
+}
+
+
+public function personatgesdeCampanya($id_campanya)
+{
+    $campanya = Campanya::withCount('personatges')->find($id_campanya);
+
+    if (!$campanya) {
+        return response()->json(['error' => 'Campanya no trobada'], 404);
+    }
+
+    return response()->json(['personatges_count' => $campanya->personatges_count], 200);
+}
+
+public function getClassesByCampanya($id_campanya)
+{
+    $campanya = Campanya::findOrFail($id_campanya);
+
+    $classeCampanya = DB::table('classe_campanya')
+        ->where('campanya_id', $id_campanya)
+        ->get();
+
+    return response()->json([
+        'campanya' => $campanya->nom,
+        'classe_campanya' => $classeCampanya
+    ], 200);
+}
+
+public function getPersonatgesByUser($id_campanya)
+{
+    $userId = Auth::id();
+
+    if (!$userId) {
+        return response()->json(['error' => 'Usuari no autenticat'], 401);
+    }
+
+    $campanya = Campanya::findOrFail($id_campanya);
+
+    $personatges = DB::table('personatges')
+        ->where('user_id', $userId)
+        ->where('joc_id', $campanya->joc_id)
+        ->whereNull('campanya_id')
+        ->get();
+
+    return response()->json([
+        'user_id' => $userId,
+        'personatges' => $personatges
+    ], 200);
+}
+
+public function checkGetPersonatges($id_campanya)
+{
+    $campanya = Campanya::findOrFail($id_campanya);
+
+    $maxPersonatges = $campanya->personatges;
+
+    // Obtener el conteo de personajes en la campaña
+    $response = $this->personatgesdeCampanya($id_campanya);
+    $PersonatgesCount = $response->getData()->personatges_count;
+
+    if ($PersonatgesCount >= $maxPersonatges) {
+        return response()->json([
+            'error' => true,
+            'message' => 'No es poden afegir més personatges a aquesta campanya. Màxim permès: ' . $maxPersonatges,
+        ]);
+    }
+
+    // Obtener las clases asociadas a la campaña
+    $classesResponse = $this->getClassesByCampanya($id_campanya);
+    $classeCampanya = json_decode($classesResponse->getContent())->classe_campanya;
+
+    // Obtener los personajes del usuario
+    $userPersonatgesResponse = $this->getPersonatgesByUser($id_campanya);
+    $userPersonatgesData = json_decode($userPersonatgesResponse->getContent());
+
+    if (!isset($userPersonatgesData->personatges)) {
+        return response()->json(['error' => 'No s\'han trobat personatges per a l\'usuari.'], 404);
+    }
+
+    $userPersonatges = collect($userPersonatgesData->personatges);
+
+    $classeIds = collect($classeCampanya)->pluck('classe_id')->toArray();
+
+    $allowAnyClasse = in_array(null, $classeIds);
+
+    $filteredPersonatges = $userPersonatges->filter(function ($personatge) use ($classeIds, $allowAnyClasse) {
+        return $allowAnyClasse || in_array($personatge->classe_id, $classeIds);
+    });
+
+    return response()->json([
+        'campanya' => $campanya->nom,
+        'max_personatges' => $maxPersonatges,
+        'personatges_count' => $PersonatgesCount,
+        'remaining_slots' => $maxPersonatges - $PersonatgesCount,
+        'filtered_personatges' => $filteredPersonatges->values()
+    ], 200);
+}
+
+
 }
