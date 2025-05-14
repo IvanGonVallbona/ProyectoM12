@@ -70,3 +70,13 @@ Route::delete('/personatge/{id}', [ApiController::class, 'destroyPersonatge']);
 
 // CAMPANYES
 
+Route::get('/campanyes', [ApiController::class, 'listCampanyes']);
+Route::get('/campanya/{id}', [ApiController::class, 'getCampanya']);
+Route::post('/campanya', [ApiController::class, 'createCampanya']);
+Route::put('/campanya/{id}', [ApiController::class, 'updateCampanya']);
+Route::delete('/campanya/{id}', [ApiController::class, 'deleteCampanya']);
+Route::get('/campanya/{id_campanya}/personatges', [ApiController::class, 'personatgesdeCampanya']);
+Route::post('/campanya/{id_campanya}/personatge/{id_personatge}', [ApiController::class, 'addPersonatgeToCampanyaApi']);
+Route::get('/campanya/{id_campanya}/classes', [ApiController::class, 'getClassesByCampanya']);
+Route::get('/campanya/{id_campanya}/personatges/user', [ApiController::class, 'getPersonatgesByUser']);
+Route::get('/campanya/{id_campanya}/check-personatges', [ApiController::class, 'checkGetPersonatges']);
