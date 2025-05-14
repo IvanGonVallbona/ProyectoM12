@@ -11,6 +11,8 @@ import { FormsModule } from "@angular/forms";
 import { provideHttpClient } from '@angular/common/http';
 import { ManualListComponent } from './manual-list/manual-list.component';
 import { RazaListComponent } from './raza-list/raza-list.component';
+import { CampanyaListComponent } from './campanya-list/campanya-list.component';
+import { PersonatgeListComponent } from './personatge-list/personatge-list.component';
 
 
 @NgModule({
@@ -21,6 +23,8 @@ import { RazaListComponent } from './raza-list/raza-list.component';
     WelcomeComponent,
     ManualListComponent,
     RazaListComponent,
+    CampanyaListComponent,
+    PersonatgeListComponent,
   ],
   imports: [
     BrowserModule,

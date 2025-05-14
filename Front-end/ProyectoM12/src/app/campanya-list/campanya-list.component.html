@@ -1,0 +1,29 @@
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="panel panel-primary shadow-sm rounded">
+                <div class="panel-heading bg-primary text-white p-3 text-center">
+                    <h3 class="panel-title mb-0">Llistat de campanyes</h3>
+                </div>
+                <div class="panel-body p-4">
+                    <div *ngIf="campanyes.length == 0" class="text-center text-muted">
+                        <h4>No hi ha campanyes</h4>
+                    </div>
+                    <div *ngIf="campanyes.length > 0">
+                        <div class="row">
+                            <div class="col-md-4 mb-4" *ngFor="let campanya of campanyes">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title">{{campanya.nom}}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Estat: {{campanya.estat}}</h6>
+                                        <p class="card-text flex-grow-1">{{campanya.descripcio}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

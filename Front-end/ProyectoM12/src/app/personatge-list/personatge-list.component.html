@@ -1,0 +1,44 @@
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="panel panel-primary shadow-sm rounded">
+                <div class="panel-heading bg-primary text-white p-3 text-center">
+                    <h3 class="panel-title mb-0">Llistat de personatges</h3>
+                </div>
+                <div class="panel-body p-4">
+                    <div *ngIf="personatges.length == 0" class="text-center text-muted">
+                        <h4>No hi ha personatges</h4>
+                    </div>
+                    <div *ngIf="personatges.length > 0">
+                        <div class="row">
+                            <div class="col-md-4 mb-4" *ngFor="let personatge of personatges">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title">{{personatge.nom}}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">
+                                            Nivell: {{personatge.nivell}}
+                                        </h6>
+                                        <p class="card-text mb-1"><strong>Classe:</strong> {{
+                                            getNom(personatge.classe_id) }}</p>
+                                        <p class="card-text mb-1"><strong>Raça:</strong> {{ getNom(personatge.raza_id)
+                                            }}</p>
+                                        <p class="card-text mb-1"><strong>Joc:</strong> {{ getNom(personatge.joc_id) }}
+                                        </p>
+                                        <p class="card-text mb-1"><strong>Campanya:</strong> {{
+                                            getNom(personatge.campanya_id) }}</p>
+                                        <!-- <p class="card-text mb-1"><strong>Usuari:</strong> {{personatge.user_id?.name}}
+                                        </p> -->
+                                        <img *ngIf="personatge.imatge"
+                                            [src]="'http://localhost:8000/' + personatge.imatge"
+                                            [alt]="'Imatge de ' + personatge.nom" height="200px" width="200px"
+                                            class="mt-2 mx-auto d-block rounded">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
