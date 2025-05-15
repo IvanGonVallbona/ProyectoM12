@@ -126,16 +126,21 @@ class ApiController extends Controller
     }
 
     public function newRegistre(Request $request)
-    {
-        $request->validate([
-            'titol' => 'required|string|max:255',
-            'descripcio' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'titol' => 'required|string|max:255',
+        'descripcio' => 'required|string',
+        'campanya_id' => 'required|exists:campanyes,id', 
+    ]);
 
-        $registre = Registre::create($request->all());
+    $registre = Registre::create([
+        'titol' => $request->titol,
+        'descripcio' => $request->descripcio,
+        'campanya_id' => $request->campanya_id, 
+    ]);
 
-        return response()->json(['message' => 'Registre creat correctament!', 'registre' => $registre], 201);
-    }
+    return response()->json(['message' => 'Registre creat correctament!', 'registre' => $registre], 201);
+}
 
     public function editRegistre(Request $request, $id)
     {
@@ -157,6 +162,12 @@ class ApiController extends Controller
         $registre->delete();
 
         return response()->json(['message' => 'Registre eliminat correctament!']);
+    }
+
+    public function registresByCampanya($campanya_id)
+    {
+    $registres = Registre::where('campanya_id', $campanya_id)->get();
+    return response()->json($registres);
     }
 
     // CLASSES

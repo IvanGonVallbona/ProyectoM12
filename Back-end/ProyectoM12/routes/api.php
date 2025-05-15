@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\RegistreController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -16,7 +17,6 @@ Route::get('/manual/{id}', [ApiController::class, 'getManual']);
 Route::post('/manual', [ApiController::class, 'crearManual']);
 Route::put('/manual/{id}', [ApiController::class, 'editarManual']);
 Route::delete('/manual/{id}', [ApiController::class, 'borrarManual']);
-//Route::get('/videojoc/{id}/imatge', [ApiController::class, 'getVideojocImatge']);
 
 // REGISTRES
 
@@ -25,6 +25,7 @@ Route::get('/registre/{id}', [ApiController::class, 'getRegistre']);
 Route::post('/registre', [ApiController::class, 'newRegistre']);
 Route::put('/registre/{id}', [ApiController::class, 'editRegistre']);
 Route::delete('/registre/{id}', [ApiController::class, 'deleteRegistre']);
+Route::get('/registres/campanya/{campanya_id}', [RegistreController::class, 'registresByCampanya']);
 
 
 // CLASSES
