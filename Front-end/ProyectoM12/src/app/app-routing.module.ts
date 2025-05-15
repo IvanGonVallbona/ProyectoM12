@@ -6,6 +6,7 @@ import { ManualListComponent } from './manual-list/manual-list.component';
 import { RazaListComponent } from './raza-list/raza-list.component';
 import { CampanyaListComponent } from './campanya-list/campanya-list.component';
 import { PersonatgeListComponent } from './personatge-list/personatge-list.component';
+import { RegistreListComponent } from './registre-list/registre-list.component';
 
 const routes: Routes = [
   { path: 'welcome', component: WelcomeComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'raza-list', component: RazaListComponent },
   { path: 'campanya-list', component: CampanyaListComponent },
   { path: 'personatge-list', component: PersonatgeListComponent },
+  { path: 'registre-list/:id', component: RegistreListComponent },
   { path: '', redirectTo: 'welcome', pathMatch: 'full' },
   { path: '**', redirectTo: 'welcome', pathMatch: 'full' },
 ];

@@ -16,6 +16,9 @@ export class PersonatgeListComponent implements OnInit {
   titolLlistat = "Llistat de personatges";
   personatges: IPersonatge[] = [];
   errorMessage: string = '';
+  getCampanyaNom(obj: any): string {
+    return (obj && typeof obj === 'object' && 'nom' in obj) ? obj.nom : 'No està assignat a una campanya';
+  }
 
   constructor(
     private personatgeService: DadesPersonatgesService,

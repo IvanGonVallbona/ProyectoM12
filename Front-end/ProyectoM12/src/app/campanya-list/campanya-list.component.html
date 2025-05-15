@@ -17,6 +17,10 @@
                                         <h5 class="card-title">{{campanya.nom}}</h5>
                                         <h6 class="card-subtitle mb-2 text-muted">Estat: {{campanya.estat}}</h6>
                                         <p class="card-text flex-grow-1">{{campanya.descripcio}}</p>
+                                        <a class="btn btn-primary mt-2 align-self-end"
+                                            [routerLink]="['/registre-list', campanya.id]">
+                                            Ver registres
+                                        </a>
                                     </div>
                                 </div>
                             </div>

@@ -24,8 +24,9 @@
                                             }}</p>
                                         <p class="card-text mb-1"><strong>Joc:</strong> {{ getNom(personatge.joc_id) }}
                                         </p>
-                                        <p class="card-text mb-1"><strong>Campanya:</strong> {{
-                                            getNom(personatge.campanya_id) }}</p>
+                                        <p>
+                                            <strong>Campanya:</strong> {{ getCampanyaNom(personatge.campanya_id) }}
+                                        </p>
                                         <!-- <p class="card-text mb-1"><strong>Usuari:</strong> {{personatge.user_id?.name}}
                                         </p> -->
                                         <img *ngIf="personatge.imatge"
