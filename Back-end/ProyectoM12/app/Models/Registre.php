@@ -10,10 +10,16 @@ class Registre extends Model
     use HasFactory;
 
 
-    protected $table = 'registres';
+     protected $table = 'registres';
 
     protected $fillable = [
         'titol',
-        'descripcio'
+        'descripcio',
+        'campanya_id', 
     ];
+
+    public function campanya()
+    {
+        return $this->belongsTo(Campanya::class);
+    }
 }

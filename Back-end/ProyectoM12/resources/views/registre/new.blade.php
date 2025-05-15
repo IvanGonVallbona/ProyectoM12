@@ -34,6 +34,23 @@
                                 </span>
                             @enderror
                         </div>
+                        
+                        <div class="mb-3">
+                            <label for="campanya_id" class="form-label">Campanya:</label>
+                            <select name="campanya_id" id="campanya_id" class="form-select @error('campanya_id') is-invalid @enderror" required>
+                             <option value="">Selecciona una campanya</option>
+                            @foreach($campanyes as $campanya)
+                                <option value="{{ $campanya->id }}" {{ old('campanya_id') == $campanya->id ? 'selected' : '' }}>
+                                {{ $campanya->nom }}
+                                </option>
+                            @endforeach
+                            </select>
+                        @error('campanya_id')
+                         <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                        </div>
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">Guardar</button>
