@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('titol');
             $table->longText('descripcio');
+            $table->foreignId('campanya_id')->constrained('campanyes')->onDelete('cascade');
         });
     }
 
