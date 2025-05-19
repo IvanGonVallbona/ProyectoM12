@@ -50,7 +50,7 @@
                                         <td>{{ Str::limit($manual->descripcio, 50) }}</td>
                                         <td>
                                             @if ($manual->imatge)
-                                                <img src="{{ $manual->imatge }}" alt="Foto Manual" style="width: 100px;">
+                                                <img src="{{ $manual->imatge }}" alt="Foto Manual {{ $manual->nom }} " style="width: 100px;">
                                             @else
                                                 No disponible
                                             @endif
