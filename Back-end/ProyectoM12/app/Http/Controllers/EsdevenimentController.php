@@ -106,7 +106,7 @@ class EsdevenimentController extends Controller
             $esdeveniment->participants()->attach($request->user_id);
         }
 
-        return redirect()->route('esdeveniments.index')->with('status', 'Usuari inscrit correctament!');
+        return redirect()->route('events.index')->with('status', 'Usuari inscrit correctament!');
     }
 
     public function desinscriureUsuari(Request $request, Esdeveniment $esdeveniment)
@@ -120,6 +120,6 @@ class EsdevenimentController extends Controller
             $esdeveniment->participants()->detach($request->user_id);
         }
 
-        return redirect()->route('esdeveniments.index')->with('status', 'Usuari desinscrit correctament!');
+        return redirect()->route('events.index')->with('status', 'Usuari desinscrit correctament!');
     }
 }

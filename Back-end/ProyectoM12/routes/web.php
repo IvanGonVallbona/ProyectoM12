@@ -75,5 +75,9 @@ Route::resource('personatges', PersonatgeController::class)
 // RAZAS
 Route::resource('razas', RazaController::class);
 
+// EVENTS
+Route::get('/events', [App\Http\Controllers\EventController::class, 'index'])->name('events.index');
+
+
 require __DIR__.'/auth.php';
  
