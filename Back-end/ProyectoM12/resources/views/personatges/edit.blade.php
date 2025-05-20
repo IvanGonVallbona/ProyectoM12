@@ -32,11 +32,21 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="raza_id">Raza</label>
+                                <label for="raza_id">
+                                    Raza
+                                    <!-- 
+                                    Es mostra l'anterior per text perque no s'ha aconseguit que es seleccioni 
+                                    automaticament l'anterior raza.
+                                    -->
+                                    @if($personatge->raza)
+                                        <small class="text-muted">(Anterior: {{ $personatge->raza->nom }})</small>
+                                    @endif
+                                </label>
                                 <select name="raza_id" id="raza_id" class="form-control" required>
                                     <option value="" disabled>Selecciona una raza</option>
                                     @foreach($razas as $raza)
-                                        <option value="{{ $raza->id }}" data-joc-id="{{ $raza->joc_id }}" {{ old('raza_id', $personatge->raza->id ?? '') == $raza->id ? 'selected' : '' }}>
+                                        <option value="{{ $raza->id }}" data-joc-id="{{ $raza->joc_id }}"
+                                            @if((string)old('raza_id', $personatge->raza_id ?? $personatge->raza->id ?? '') === (string)$raza->id) selected @endif>
                                             {{ $raza->nom }}
                                         </option>
                                     @endforeach
@@ -44,7 +54,16 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="classe_id">Classe</label>
+                                <label for="classe_id">
+                                    Classe
+                                    <!-- 
+                                    Es mostra l'anterior per text perque no s'ha aconseguit que es seleccioni 
+                                    automaticament l'anterior classe.
+                                    -->
+                                    @if($personatge->classe)
+                                        <small class="text-muted">(Anterior: {{ $personatge->classe->nom }})</small>
+                                    @endif
+                                </label>
                                 <select name="classe_id" id="classe_id" class="form-control" required>
                                     <option value="" disabled>Selecciona una classe</option>
                                     @foreach($classes as $classe)
