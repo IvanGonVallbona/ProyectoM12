@@ -58,6 +58,8 @@ Route::get('/manuals/list', [ManualController::class, 'list'])->name('manual_lis
 Route::match(['get', 'post'], '/manual/new', [ManualController::class, 'new'])->name('manual_new');
 Route::match(['get', 'post'], '/manual/edit/{id}', [ManualController::class, 'edit'])->name('manual_edit');
 Route::delete('/manual/delete/{id}', [ManualController::class, 'delete'])->name('manual_delete');
+Route::get('/manuals/{manual}', [App\Http\Controllers\ManualController::class, 'show'])->name('manual_show');
+
 
 // ESDEVENIMENTS
 Route::resource('esdeveniments', EsdevenimentController::class)

@@ -50,7 +50,7 @@
                                         <td>{{ Str::limit($manual->descripcio, 50) }}</td>
                                         <td>
                                             @if ($manual->imatge)
-                                                <img src="{{ $manual->imatge }}" alt="Foto Manual" style="width: 100px;">
+                                                <img src="{{ $manual->imatge }}" alt="Foto Manual {{ $manual->nom }}" style="width: 100px;">
                                             @else
                                                 No disponible
                                             @endif
@@ -72,10 +72,8 @@
                         @endif
                     </div>
                 </div>
-            @endif
-
-            {{-- Vista para user o dm --}}
-            @if ($user && ($user->tipus_usuari === 'user' || $user->tipus_usuari === 'dm'))
+            @else
+                {{-- Vista para user, dm o qualsevol visitante --}}
                 <div class="panel panel-primary shadow-sm rounded">
                     <div class="panel-heading bg-primary text-white p-3 text-center">
                         <h3 class="panel-title mb-0">Llistat de manuals</h3>
@@ -102,7 +100,7 @@
                                                     </span>
                                                     <span id="desc-full-{{ $manual->id }}" style="display:none;">
                                                         {{ $manual->descripcio }}
-                                                        <button class="btn btn-link p-0 ms-1" onclick="toggleDesc({{ $manual->id }})" type="button">Leer menys</button>
+                                                        <button class="btn btn-link p-0 ms-1" onclick="toggleDesc({{ $manual->id }})" type="button">Leer menos</button>
                                                     </span>
                                                 </p>
                                                 <p class="card-text"><strong>Jugabilitat:</strong> {{ $manual->jugabilidad }}</p>
@@ -111,6 +109,7 @@
                                                 @else
                                                     <span class="text-muted">No disponible</span>
                                                 @endif
+                                                <a href="{{ route('manual_show', $manual->id) }}" class="btn btn-primary mt-2">Ver más</a>
                                             </div>
                                         </div>
                                     </div>
