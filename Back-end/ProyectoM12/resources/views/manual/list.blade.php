@@ -74,9 +74,9 @@
                 </div>
             @else
                 {{-- Vista para user, dm o qualsevol visitante --}}
-                <div class="panel panel-primary shadow-sm rounded">
-                    <div class="panel-heading bg-primary text-white p-3 text-center">
-                        <h3 class="panel-title mb-0">Llistat de manuals</h3>
+                <div class="card shadow-sm rounded">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h3 class="mb-0">Llistat de manuals</h3>
                     </div>
                     <div class="panel-body p-4">
                         @if(count($manuals) == 0)
