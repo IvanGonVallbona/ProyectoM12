@@ -11,8 +11,41 @@ class CampanyaController extends Controller
 {
     public function list()
     {
-        $campanyes = Campanya::with('user')->get();
-        return view('campanya.list', ['campanyes' => $campanyes]);
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect()->route('login')
+                ->with('error', "Has d'iniciar sessió per veure les campanyes.");
+        }
+
+        if ($user->tipus_usuari === 'admin') {
+            // Admin: ve todas las campañas
+            $campanyes = Campanya::with(['user', 'manual'])->get();
+            return view('campanya.list', [
+                'campanyes' => $campanyes,
+                'campanyesPropies' => collect(), // vacío para evitar errores en la vista
+            ]);
+        } else {
+            // DM o usuario normal: solo campañas donde participa (como DM o jugador)
+            $campanyesDM = Campanya::with('manual')
+                ->where('user_id', $user->id)
+                ->get();
+
+            // Campañas donde el usuario tiene algún personaje asignado
+            $campanyesJugador = Campanya::with('manual')
+                ->whereHas('personatgesCampanya', function ($q) use ($user) {
+                    $q->where('user_id', $user->id);
+                })
+                ->get();
+
+            // Unir y quitar duplicados
+            $campanyesPropies = $campanyesDM->merge($campanyesJugador)->unique('id');
+
+            return view('campanya.list', [
+                'campanyes' => collect(), // vacío para evitar errores en la vista
+                'campanyesPropies' => $campanyesPropies,
+            ]);
+        }
     }
 
     public function new(Request $request)
@@ -365,6 +398,26 @@ class CampanyaController extends Controller
         // Si tot és correcte, redirigir a la llista de campanyes amb un missatge d'èxit
         return redirect()->route('campanya_list')
             ->with('status', 'Personatge afegit a la campanya "' . $campanya->nom . '"!');
+    }
+
+    public function show($id)
+    {
+        $campanya = Campanya::with(['manual', 'user', 'personatgesCampanya.classe'])->findOrFail($id);
+
+        // Personaje del usuario actual en esta campaña
+        $miPersonatge = null;
+        if (Auth::check()) {
+            $miPersonatge = $campanya->personatgesCampanya->where('user_id', Auth::id())->first();
+        }
+
+        // Todos los personajes de la campaña (solo para DM)
+        $personatges = $campanya->personatgesCampanya;
+
+        return view('campanya.show', [
+            'campanya' => $campanya,
+            'miPersonatge' => $miPersonatge,
+            'personatges' => $personatges,
+        ]);
     }
 
 }

@@ -24,7 +24,7 @@ class Campanya extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function personatges()
+    public function personatgesCampanya()
     {
         return $this->hasMany(Personatge::class);
     }
@@ -40,5 +40,9 @@ class Campanya extends Model
     public function classes()
     {
         return $this->belongsToMany(Classe::class, 'classe_campanya');
+    }
+    public function registres()
+    {
+        return $this->hasMany(Registre::class);
     }
 }
