@@ -25,6 +25,16 @@
                     @else
                         <p class="text-muted">No hay clases asociadas a este manual.</p>
                     @endif
+                    <h4>Razas asociadas</h4>
+                    @if($razas->count())
+                        <ul>
+                            @foreach($razas as $raza)
+                                <li>{{ $raza->nom }}: {{ $raza->descripcio }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p class="text-muted">No hay razas asociadas a este manual.</p>
+                    @endif
                 </div>
             </div>
         </div>

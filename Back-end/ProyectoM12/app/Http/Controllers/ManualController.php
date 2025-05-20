@@ -123,9 +123,11 @@ class ManualController extends Controller
     }
 
     public function show($id)
-{
-    $manual = Manual::findOrFail($id);
-    $classes = \App\Models\Classe::where('joc_id', $manual->id)->get();
-    return view('manual.show', compact('manual', 'classes'));
-}
+    {
+        $manual = Manual::findOrFail($id);
+        $classes = \App\Models\Classe::where('joc_id', $manual->id)->get();
+        $razas = \App\Models\Raza::where('joc_id', $manual->id)->get();
+        return view('manual.show', compact('manual', 'classes', 'razas'));
+    }
+
 }
