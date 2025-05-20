@@ -19,7 +19,7 @@
                     <p class="card-text">
                         Bienvenidos a la página web de gestión del club de rol. Desde aquí podrás consultar diversos
                         manuales de los juegos que podrás disfrutar en nuestro club, aprendiendo un poco de su historia y su
-                        jugabilidad. También podrás crear y visualizar tus personajes además de añadirlos a campañas creadas por los Dungeon Masters. 
+                        jugabilidad. También podrás crear y visualizar tus personajes además de añadirlos a campañas creadas por los Dungeon Masters y donde podrás examinar los registros de cada sesión de juego para recordar los hechos acontecidos en sesiones anteriores. 
                     </p>
                 </div>
             </div>
