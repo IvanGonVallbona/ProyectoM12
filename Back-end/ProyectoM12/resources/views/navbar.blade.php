@@ -8,12 +8,6 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('classes*') ? 'active' : '' }}" href="{{ route('classe_list') }}">Classes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('razas*') ? 'active' : '' }}" href="{{ route('razas.index') }}">Razas</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link {{ request()->is('campanyes*') ? 'active' : '' }}" href="{{ route('campanya_list') }}">Campanyes</a>
                 </li>
                 <li class="nav-item">
