@@ -121,4 +121,13 @@ class ManualController extends Controller
         return redirect()->route('manual_list')
             ->with('status', 'Manual "' . $nom . '" eliminat correctament!');
     }
+
+    public function show($id)
+    {
+        $manual = Manual::findOrFail($id);
+        $classes = \App\Models\Classe::where('joc_id', $manual->id)->get();
+        $razas = \App\Models\Raza::where('joc_id', $manual->id)->get();
+        return view('manual.show', compact('manual', 'classes', 'razas'));
+    }
+
 }
