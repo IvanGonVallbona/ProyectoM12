@@ -89,5 +89,47 @@ class RegistreController extends Controller
     $registres = Registre::where('campanya_id', $campanya_id)->get();
     return response()->json($registres);
     }
-    
+
+    public function editByCampanya(Request $request, $campanya_id)
+    {
+        if (Auth::user()->tipus_usuari !== 'dm') {
+            return redirect()->route('registre_list')->with('error', 'No tens permisos per editar registres.');
+        }
+
+        // Usar registresByCampanya per obtenir els registres de la campanya
+        $response = $this->registresByCampanya($campanya_id);
+        $registres = collect($response->getData());
+
+        // Si no hi ha registre, crear-ne un
+        $registre = $registres->first();
+        if (!$registre) {
+            $registreModel = new Registre();
+            $registreModel->campanya_id = $campanya_id;
+            $registreModel->titol = '';
+            $registreModel->descripcio = '';
+            $registreModel->save();
+        } else {
+            // Convertir stdClass a model Registre
+            $registreModel = Registre::findOrFail($registre->id);
+        }
+
+        if ($request->isMethod('post')) {
+            $request->validate([
+                'titol' => 'required|string|max:255',
+                'descripcio' => 'required|string',
+            ]);
+            
+            $registreModel->titol = $request->titol;
+            $registreModel->descripcio = $request->descripcio;
+            $registreModel->save();
+
+            return redirect()->route('campanya.show', $campanya_id)
+                ->with('status', 'Registre actualitzat!');
+        }
+
+        return view('registre.edit', [
+            'registre' => $registreModel,
+            'campanya_id' => $campanya_id
+        ]);
+    }
 }

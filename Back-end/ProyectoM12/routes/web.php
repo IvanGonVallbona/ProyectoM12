@@ -45,13 +45,14 @@ Route::match(['get', 'post'], '/campanya/edit/{id}', [CampanyaController::class,
 Route::delete('/campanya/delete/{id}', [CampanyaController::class, 'delete'])->name('campanya_delete');
 Route::get('/campanya/{id_campanya}/add-personatge', [CampanyaController::class, 'addPersonatge'])->name('campanya.addPersonatge');
 Route::post('/campanya/{id_campanya}/add-personatge/{id_personatge}', [CampanyaController::class, 'addPersonatgeToCampanya'])->name('campanya.addPersonatgeToCampanya');
+Route::get('/campanya/{id}', [CampanyaController::class, 'show'])->name('campanya.show');
 
 // REGISTRES
 Route::get('/registres/list', [RegistreController::class, 'list'])->name('registre_list');
 Route::match(['get', 'post'], '/registre/new', [RegistreController::class, 'new'])->name('registre_new');
 Route::match(['get', 'post'], '/registre/edit/{id}', [RegistreController::class, 'edit'])->name('registre_edit');
 Route::delete('/registre/delete/{id}', [RegistreController::class, 'delete'])->name('registre_delete');
-
+Route::match(['get', 'post'], '/registre/edit/campanya/{campanya_id}', [RegistreController::class, 'editByCampanya'])->name('registre_edit_by_campanya');
 // MANUALS
 Route::get('/manuals/list', [ManualController::class, 'list'])->name('manual_list');
 Route::match(['get', 'post'], '/manual/new', [ManualController::class, 'new'])->name('manual_new');
@@ -73,6 +74,10 @@ Route::resource('personatges', PersonatgeController::class)
 
 // RAZAS
 Route::resource('razas', RazaController::class);
+
+// EVENTS
+Route::get('/events', [App\Http\Controllers\EventController::class, 'index'])->name('events.index');
+
 
 require __DIR__.'/auth.php';
  

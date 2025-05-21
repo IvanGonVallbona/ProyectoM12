@@ -35,7 +35,6 @@
                                     <th scope="col">Participants</th>
 
                                     @if (Auth::user() && Auth::user()->tipus_usuari === 'admin' || Auth::user()->tipus_usuari === 'dm')
-
                                     <th scope="col">Accions</th>
                                     @endif
                                 </tr>
