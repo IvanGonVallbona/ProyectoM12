@@ -78,7 +78,7 @@ class PersonatgeController extends Controller
 
     public function edit(Personatge $personatge){
        
-        if (!auth()->user()->tipus_usuari === 'admin'){
+        if (auth()->user()->tipus_usuari !== 'admin'){
             if ($personatge->campanya) {
                 if ($personatge->campanya->user_id !== auth()->id()) {
                     return redirect()->route('personatges.index')->with('error', 'No tens permís per editar aquest personatge.');
@@ -108,7 +108,7 @@ class PersonatgeController extends Controller
 
     public function update(Request $request, Personatge $personatge)
     {
-        if (!auth()->user()->tipus_usuari === 'admin'){
+        if (auth()->user()->tipus_usuari !== 'admin'){
             if ($personatge->campanya) {
                 if ($personatge->campanya->user_id !== auth()->id()) {
                     return redirect()->route('personatges.index')->with('error', 'No tens permís per editar aquest personatge.');

@@ -125,10 +125,8 @@ class CampanyaController extends Controller
 
             $campanya->save();
 
-            // 🔄 Eliminar TOTES les relacions existents
             DB::table('classe_campanya')->where('campanya_id', $campanya->id)->delete();
 
-            // 🔁 Tornar a inserir una entrada per a cada personatge
             for ($i = 1; $i <= $request->personatges; $i++) {
                 $classeId = $request->input("classe_$i");
 
@@ -181,7 +179,7 @@ class CampanyaController extends Controller
     public function personatgesdeCampanya($id_campanya)
     {
         // Buscar la campaña por ID
-        $campanya = Campanya::withCount('personatges')->find($id_campanya);
+        $campanya = Campanya::withCount('personatgesCampanya')->find($id_campanya);
 
         // Verificar si la campaña existe
         if (!$campanya) {
@@ -240,10 +238,13 @@ class CampanyaController extends Controller
             ->whereNull('campanya_id') // Filtrar por personajes que no están asignados a ninguna campaña
             ->get();
 
+        
+
+
         // Retornar los datos de los personajes
         return response()->json([
             'user_id' => $userId,
-            'personatges' => $personatges
+            'personatges' => $personatges,
         ], 200);
     }
 
@@ -290,15 +291,27 @@ class CampanyaController extends Controller
             return $allowAnyClasse || in_array($personatge->classe_id, $classeIds);
         });
 
+        // Obtener los IDs de las clases necesarias (solo las que no son null)
+        $classeIds = DB::table('classe_campanya')
+            ->where('campanya_id', $id_campanya)
+            ->whereNotNull('classe_id')
+            ->pluck('classe_id')
+            ->toArray();
+
+        // Obtener los nombres de las clases necesarias
+        $classesNecessaries = Classe::whereIn('id', $classeIds)->pluck('nom')->toArray();
+
         // Retornar los personajes filtrados junto con información adicional de la campaña
         return response()->json([
             'campanya' => $campanya->nom,
             'max_personatges' => $maxPersonatges,
             'personatges_count' => $PersonatgesCount,
             'remaining_slots' => $maxPersonatges - $PersonatgesCount,
-            'filtered_personatges' => $filteredPersonatges->values()
+            'filtered_personatges' => $filteredPersonatges->values(),
+            'classesNecessaries' => $classesNecessaries,
         ], 200);
     }
+
 
     public function addPersonatge($id_campanya)
     {
@@ -310,7 +323,7 @@ class CampanyaController extends Controller
 
         $data = $response->getData();
         if (isset($data->error) && $data->error) {
-            return redirect()->route('campanya_list')
+            return redirect()->route('events.index')
             ->with('error', $data->message);
         }
 
@@ -318,7 +331,8 @@ class CampanyaController extends Controller
         return view('campanya.addPersonatge', [
             'campanya' => $campanya,
             'filteredPersonatges' => collect($data->filtered_personatges),
-            'remaining_slots' => $data->remaining_slots
+            'remaining_slots' => $data->remaining_slots,
+            'classesNecessaries' => $data->classesNecessaries,
         ]);
     }
 
@@ -334,20 +348,20 @@ class CampanyaController extends Controller
         // Verificar si el personatge existeix
         $personatge = DB::table('personatges')->where('id', $id_personatge)->first();
         if (!$personatge) {
-            return redirect()->route('campanya_list')
+            return redirect()->route('events.index')
                 ->with('error', 'Personatge no trobat.');
         }
 
         // Verificar si el personatge ja està assignat a una campanya
         if ($personatge->campanya_id) {
-            return redirect()->route('campanya_list')
+            return redirect()->route('events.index')
                 ->with('error', 'El personatge ja està assignat a una altra campanya.');
         }
 
         // Obtener la campaña por ID
         $campanya = Campanya::findOrFail($id_campanya);
         if (!$campanya) {
-            return redirect()->route('campanya_list')
+            return redirect()->route('events.index')
                 ->with('error', 'Campanya no trobada.');
         }
 
@@ -356,13 +370,13 @@ class CampanyaController extends Controller
             ->where('campanya_id', $id_campanya)
             ->count();
         if ($personatgesCount >= $campanya->personatges) {
-            return redirect()->route('campanya_list')
+            return redirect()->route('events.index')
                 ->with('error', 'No es poden afegir més personatges a aquesta campanya.');
         }
 
         // Verificar si el personatge pertany al mateix joc que la campanya
         if ($personatge->joc_id !== $campanya->joc_id) {
-            return redirect()->route('campanya_list')
+            return redirect()->route('events.index')
                 ->with('error', 'El personatge no pertany al mateix joc que la campanya.');
         }
 
@@ -372,7 +386,7 @@ class CampanyaController extends Controller
             ->update(['campanya_id' => $id_campanya]);
 
         if (!$personatge) {
-            return redirect()->route('campanya_list')
+            return redirect()->route('events.index')
                 ->with('error', 'No s\'ha pogut afegir el personatge a la campanya.');
         }
 
@@ -391,12 +405,12 @@ class CampanyaController extends Controller
         }
 
         if ($deleted === 0) {
-            return redirect()->route('campanya_list')
+            return redirect()->route('events.index')
                 ->with('error', 'No s\'ha pogut eliminar la classe associada al personatge.');
         }
 
         // Si tot és correcte, redirigir a la llista de campanyes amb un missatge d'èxit
-        return redirect()->route('campanya_list')
+        return redirect()->route('events.index')
             ->with('status', 'Personatge afegit a la campanya "' . $campanya->nom . '"!');
     }
 

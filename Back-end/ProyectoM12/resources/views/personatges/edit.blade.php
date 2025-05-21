@@ -108,12 +108,13 @@
 
 
 <script>
+    
+    // Filtrar razas y clases al cambiar el juego
     document.addEventListener('DOMContentLoaded', function () {
         const jocSelect = document.getElementById('joc_id');
         const razaSelect = document.getElementById('raza_id');
         const classeSelect = document.getElementById('classe_id');
 
-        // Filtrar razas y clases al cambiar el videojoc
         jocSelect.addEventListener('change', function () {
             const jocId = this.value;
 

@@ -20,7 +20,15 @@
                         <p><strong>Descripció:</strong> {{ $campanya->descripcio }}</p>
                         <p><strong>Estat:</strong> {{ $campanya->estat }}</p>
                         <p><strong>Joc:</strong> {{ $campanya->manual->nom }}</p>
-                        <p><strong>Espais disponibles:</strong> {{ $remaining_slots }}</p>
+                        <p><strong>Espais lliures:</strong> {{ $campanya->personatges - $campanya->personatgesCampanya->count() }}</p>
+
+                        
+                        @if(!empty($classesNecessaries))
+                            <p>
+                                <strong>Classes necessàries:</strong>
+                                {{ implode(', ', $classesNecessaries) }}
+                            </p>
+                        @endif
                     </div>
                 </div>
 
@@ -61,7 +69,7 @@
                 @endif
 
                 <div class="mt-4">
-                    <a href="{{ route('campanya_list') }}" class="btn btn-secondary">
+                    <a href="{{ route('events.index') }}" class="btn btn-secondary">
                         <i class="fa fa-arrow-left"></i> Torna
                     </a>
                 </div>

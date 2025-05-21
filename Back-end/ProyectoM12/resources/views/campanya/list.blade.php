@@ -4,7 +4,6 @@
 <div class="container py-5">
     @auth
         @if(Auth::user()->tipus_usuari === 'admin')
-            {{-- ADMIN: Tabla con todas las campañas --}}
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <div class="card">
@@ -89,6 +88,13 @@
         @else
             {{-- DM o Usuari normal: Cards de campañas pròpies --}}
             <h2 class="mb-4">Les Meves Campanyes</h2>
+            @if(Auth::user()->tipus_usuari === 'dm')
+                <div class="mb-3 text-end">
+                    <a href="{{ route('campanya_new') }}" class="btn btn-primary btn-sm">
+                        <i class="fa fa-plus"></i> Nova Campanya
+                    </a>
+                </div>
+            @endif
             <div class="row">
                 @forelse($campanyesPropies as $campanya)
                     <div class="col-md-4 mb-4">

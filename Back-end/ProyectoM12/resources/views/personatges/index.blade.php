@@ -10,7 +10,6 @@
                         <span>Llista de Personatges</span>
                         <a href="{{ route('personatges.create') }}" class="btn btn-primary btn-sm">Nou Personatge</a>
                     </div>
-
                     <div class="card-body">
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
@@ -18,80 +17,105 @@
                             </div>
                         @endif
 
-                        @if(count($personatges) > 0)
-                            <table class="table table-bordered table-hover">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th scope="col">Nom</th>
-                                        <th scope="col">Raça</th>
-                                        <th scope="col">Nivell</th>
-                                        <th scope="col">Classe</th>
-                                        <th scope="col">Joc</th>
-                                        <th scope="col">Campanya</th>
-                                        <th scope="col">Imatge</th>
-                                        <th scope="col">Accions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($personatges as $personatge)
-                                    <tr>
-                                        <td>{{ $personatge->nom }}</td>
-                                        <td>{{ $personatge->raza->nom ?? 'Sense raça' }}</td>
-                                        <td>{{ $personatge->nivell }}</td>
-                                        <td>{{ $personatge->classe->nom ?? 'Sense classe' }}</td>
-                                        <td>{{ $personatge->manual->nom ?? 'Sense joc' }}</td>
-                                        <td>{{ $personatge->campanya->nom ?? 'Sense campanya' }}</td>
-                                        <td>
-                                            @if($personatge->imatge)
-                                                <img src="{{ $personatge->imatge }}" alt="{{ $personatge->nom }}" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
-                                            @else
-                                                Sense imatge
-                                            @endif
-                                        </td>
-                                        <td class="d-flex justify-content-around">
-                                            @if($personatge->campanya)
-                                                {{-- Si el personaje está en una campaña, solo el DM puede modificarlo --}}
-                                                @if($personatge->campanya->user_id === auth()->id() || auth()->user()->tipus_usuari === 'admin')
-                                                    <a href="{{ route('personatges.edit', $personatge->id) }}" class="btn btn-warning btn-sm m-1">
-                                                        <i class="fa fa-edit"></i> Editar
-                                                    </a>
-                                                    <form action="{{ route('personatges.destroy', $personatge->id) }}" method="POST" 
-                                                          onsubmit="return confirm('Estàs segur que vols eliminar aquest personatge?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm m-1">
-                                                            <i class="fa fa-trash"></i> Eliminar
-                                                        </button>
-                                                    </form>
+                        @if(auth()->user()->tipus_usuari === 'admin')
+                            @if(count($personatges) > 0)
+                                <table class="table table-bordered table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th scope="col">Nom</th>
+                                            <th scope="col">Raça</th>
+                                            <th scope="col">Nivell</th>
+                                            <th scope="col">Classe</th>
+                                            <th scope="col">Joc</th>
+                                            <th scope="col">Campanya</th>
+                                            <th scope="col">Imatge</th>
+                                            <th scope="col">Accions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($personatges as $personatge)
+                                        <tr>
+                                            <td>{{ $personatge->nom }}</td>
+                                            <td>{{ $personatge->raza->nom ?? 'Sense raça' }}</td>
+                                            <td>{{ $personatge->nivell }}</td>
+                                            <td>{{ $personatge->classe->nom ?? 'Sense classe' }}</td>
+                                            <td>{{ $personatge->manual->nom ?? 'Sense joc' }}</td>
+                                            <td>{{ $personatge->campanya->nom ?? 'Sense campanya' }}</td>
+                                            <td>
+                                                @if($personatge->imatge)
+                                                    <img src="{{ $personatge->imatge }}" alt="{{ $personatge->nom }}" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
                                                 @else
-                                                    <span class="text-muted">Sense permisos</span>
+                                                    Sense imatge
                                                 @endif
-                                            @else
-                                                {{-- Si el personaje no está en una campaña, solo el propietario puede modificarlo --}}
-                                                @if($personatge->user_id === auth()->id() || auth()->user()->tipus_usuari === 'admin')
-                                                    <a href="{{ route('personatges.edit', $personatge->id) }}" class="btn btn-warning btn-sm m-1">
-                                                        <i class="fa fa-edit"></i> Editar
-                                                    </a>
-                                                    <form action="{{ route('personatges.destroy', $personatge->id) }}" method="POST" 
-                                                          onsubmit="return confirm('Estàs segur que vols eliminar aquest personatge?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm m-1">
-                                                            <i class="fa fa-trash"></i> Eliminar
-                                                        </button>
-                                                    </form>
-                                                @else
-                                                    <span class="text-muted">Sense permisos</span>
-                                                @endif
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                            </td>
+                                            <td class="d-flex justify-content-around">
+                                                <a href="{{ route('personatges.edit', $personatge->id) }}" class="btn btn-warning btn-sm m-1">
+                                                    <i class="fa fa-edit"></i> Editar
+                                                </a>
+                                                <form action="{{ route('personatges.destroy', $personatge->id) }}" method="POST" 
+                                                      onsubmit="return confirm('Estàs segur que vols eliminar aquest personatge?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm m-1">
+                                                        <i class="fa fa-trash"></i> Eliminar
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @else
+                                <div class="alert alert-info">
+                                    No hi ha personatges registrats. <a href="{{ route('personatges.create') }}">Crear un nou personatge</a>
+                                </div>
+                            @endif
                         @else
-                            <div class="alert alert-info">
-                                No hi ha personatges registrats. <a href="{{ route('personatges.create') }}">Crear un nou personatge</a>
+                            <div class="row">
+                                @forelse($personatges as $personatge)
+                                    @if($personatge->user_id === auth()->id())
+                                    <div class="col-md-4 mb-4">
+                                        <div class="card h-100">
+                                            @if($personatge->imatge)
+                                                <img src="{{ $personatge->imatge }}" class="card-img-top" alt="{{ $personatge->nom }}" style="max-height: 200px; object-fit: cover;">
+                                            @endif
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ $personatge->nom }}</h5>
+                                                <p class="card-text">
+                                                    <strong>Raça:</strong> {{ $personatge->raza->nom ?? 'Sense raça' }}<br>
+                                                    <strong>Nivell:</strong> {{ $personatge->nivell }}<br>
+                                                    <strong>Classe:</strong> {{ $personatge->classe->nom ?? 'Sense classe' }}<br>
+                                                    <strong>Joc:</strong> {{ $personatge->manual->nom ?? 'Sense joc' }}<br>
+                                                    <strong>Campanya:</strong> {{ $personatge->campanya->nom ?? 'Sense campanya' }}
+                                                </p>
+                                            </div>
+                                            <div class="card-footer d-flex p-0">
+                                                @if($personatge->campanya)
+                                                    <span class="text-danger w-100 text-center align-self-center">No es pot gestionar perquè pertany a una campanya.</span>
+                                                @else
+                                                    <a href="{{ route('personatges.edit', $personatge->id) }}" class="btn btn-warning btn-sm w-50 rounded-0 border-0">
+                                                        <i class="fa fa-edit"></i> Editar
+                                                    </a>
+                                                    <form action="{{ route('personatges.destroy', $personatge->id) }}" method="POST" 
+                                                          onsubmit="return confirm('Estàs segur que vols eliminar aquest personatge?');" class="w-50 m-0">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm w-100 rounded-0 border-0">
+                                                            <i class="fa fa-trash"></i> Eliminar
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                @empty
+                                    <div class="col-12">
+                                        <div class="alert alert-info">
+                                            No tens personatges per mostrar. <a href="{{ route('personatges.create') }}">Crear un nou personatge</a>
+                                        </div>
+                                    </div>
+                                @endforelse
                             </div>
                         @endif
                     </div>
