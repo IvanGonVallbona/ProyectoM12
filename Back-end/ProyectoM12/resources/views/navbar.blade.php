@@ -32,6 +32,9 @@
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('raza*') ? 'active' : '' }}" href="{{ route('razas.index') }}">Razas</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('users*') ? 'active' : '' }}" href="{{ route('users.index') }}">Usuaris</a>
+                        </li>
                     @else
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('events') ? 'active' : '' }}" href="{{ route('events.index') }}">Events</a>
