@@ -94,12 +94,12 @@
                                                     <span id="desc-short-{{ $manual->id }}">
                                                         {{ Str::limit($manual->descripcio, 80) }}
                                                         @if(strlen($manual->descripcio) > 80)
-                                                            ... <button class="btn btn-link p-0 ms-1" onclick="toggleDesc({{ $manual->id }})" type="button">Leer más</button>
+                                                            ... <button class="btn btn-link p-0 ms-1" onclick="toggleDesc({{ $manual->id }})" type="button">Llegir més</button>
                                                         @endif
                                                     </span>
                                                     <span id="desc-full-{{ $manual->id }}" style="display:none;">
                                                         {{ $manual->descripcio }}
-                                                        <button class="btn btn-link p-0 ms-1" onclick="toggleDesc({{ $manual->id }})" type="button">Leer menos</button>
+                                                        <button class="btn btn-link p-0 ms-1" onclick="toggleDesc({{ $manual->id }})" type="button">Llegir menys</button>
                                                     </span>
                                                 </p>
                                                 <p class="card-text"><strong>Jugabilitat:</strong> {{ $manual->jugabilidad }}</p>
@@ -108,7 +108,7 @@
                                                 @else
                                                     <span class="text-muted">No disponible</span>
                                                 @endif
-                                                <a href="{{ route('manual_show', $manual->id) }}" class="btn btn-primary mt-2">Ver más</a>
+                                                <a href="{{ route('manual_show', $manual->id) }}" class="btn btn-primary mt-2">Veure més</a>
                                             </div>
                                         </div>
                                     </div>

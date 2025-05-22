@@ -40,7 +40,6 @@
                     @endif
 
                 @endauth
-
             </ul>
             <ul class="navbar-nav">
                 @if (Auth::check())
