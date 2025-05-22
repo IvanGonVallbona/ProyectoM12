@@ -16,13 +16,15 @@ class RegistreController extends Controller
         return view('registre.list', ['registres' => $registres]);
     }
 
-     public function new(Request $request)
+    public function new(Request $request)
     {
-        if (Auth::user()->tipus_usuari !== 'dm') {
+        $campanya = Campanya::find($request->campanya_id);
+        if ( Auth::user()->tipus_usuari !== 'dm' || $campanya->user_id !== Auth::id() ) 
+        {
             return redirect()->route('registre_list')->with('error', 'No tens permisos per crear registres.');
         }
-
-        // Obtener todas las campañas para el desplegable
+        
+        // Obtener todas las campañas para el desplegable 
         $campanyes = Campanya::all();
 
         if ($request->isMethod('post')) {
@@ -47,8 +49,10 @@ class RegistreController extends Controller
 
     public function edit(Request $request, $id)
     {
-        if (Auth::user()->tipus_usuari !== 'dm') {
-            return redirect()->route('registre_list')->with('error', 'No tens permisos per editar registres.');
+        $campanya = Campanya::find($request->campanya_id);
+        if ( Auth::user()->tipus_usuari !== 'dm' || $campanya->user_id !== Auth::id() ) 
+        {
+            return redirect()->route('registre_list')->with('error', 'No tens permisos per crear registres.');
         }
         $registre = Registre::findOrFail($id);
         
@@ -69,48 +73,49 @@ class RegistreController extends Controller
         return view('registre.edit', ['registre' => $registre]);
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
-        if (Auth::user()->tipus_usuari !== 'dm') {
+        $registre = Registre::findOrFail($id);
+        $campanya = $registre->campanya;
+
+        if (Auth::user()->tipus_usuari !== 'dm' || !$campanya || $campanya->user_id !== Auth::id()) {
             return redirect()->route('registre_list')->with('error', 'No tens permisos per eliminar registres.');
         }
-        $registre = Registre::findOrFail($id);
-        
+
         $titol = $registre->titol;
-        
+        $campanya_id = $campanya->id;
         $registre->delete();
-        
-        return redirect()->route('registre_list')
-            ->with('status', 'Registre "' . $titol . '" eliminat correctament!');
+
+        // Redirige según el origen
+        if ($request->has('byCampanya') && $request->input('byCampanya')) {
+            return redirect()->route('campanya.show', $campanya_id)
+                ->with('status', 'Registre "' . $titol . '" eliminat correctament!');
+        } else {
+            return redirect()->route('registre_list')
+                ->with('status', 'Registre "' . $titol . '" eliminat correctament!');
+        }
     }
 
     public function registresByCampanya($campanya_id)
     {
-    $registres = Registre::where('campanya_id', $campanya_id)->get();
-    return response()->json($registres);
+        $registres = Registre::where('campanya_id', $campanya_id)->get();
+        return response()->json($registres);
     }
 
-    public function editByCampanya(Request $request, $campanya_id)
+    public function editByCampanya(Request $request, $campanya_id, $registre_id)
     {
-        if (Auth::user()->tipus_usuari !== 'dm') {
+        $campanya = Campanya::findOrFail($campanya_id);
+        if (Auth::user()->tipus_usuari !== 'dm' || $campanya->user_id !== Auth::id()) {
             return redirect()->route('registre_list')->with('error', 'No tens permisos per editar registres.');
         }
 
-        // Usar registresByCampanya per obtenir els registres de la campanya
-        $response = $this->registresByCampanya($campanya_id);
-        $registres = collect($response->getData());
+        $registre = Registre::where('campanya_id', $campanya_id)
+            ->where('id', $registre_id)
+            ->first();
 
-        // Si no hi ha registre, crear-ne un
-        $registre = $registres->first();
         if (!$registre) {
-            $registreModel = new Registre();
-            $registreModel->campanya_id = $campanya_id;
-            $registreModel->titol = '';
-            $registreModel->descripcio = '';
-            $registreModel->save();
-        } else {
-            // Convertir stdClass a model Registre
-            $registreModel = Registre::findOrFail($registre->id);
+            return redirect()->route('registre_new_by_campanya', ['campanya_id' => $campanya_id])
+                ->with('error', 'No existeix aquest registre per aquesta campanya.');
         }
 
         if ($request->isMethod('post')) {
@@ -119,17 +124,51 @@ class RegistreController extends Controller
                 'descripcio' => 'required|string',
             ]);
             
-            $registreModel->titol = $request->titol;
-            $registreModel->descripcio = $request->descripcio;
-            $registreModel->save();
+            $registre->titol = $request->titol;
+            $registre->descripcio = $request->descripcio;
+            $registre->save();
 
             return redirect()->route('campanya.show', $campanya_id)
                 ->with('status', 'Registre actualitzat!');
         }
 
         return view('registre.edit', [
-            'registre' => $registreModel,
-            'campanya_id' => $campanya_id
+            'registre' => $registre,
+            'campanya_id' => $campanya_id,
+            'byCampanya' => true,
+        ]);
+    }
+
+    public function newByCampanya(Request $request, $campanya_id)
+    {
+        $campanya = Campanya::findOrFail($campanya_id);
+
+        if (Auth::user()->tipus_usuari !== 'dm' || $campanya->user_id !== Auth::id()) {
+            return redirect()->route('registre_list')->with('error', 'No tens permisos per crear registres.');
+        }
+
+        if ($request->isMethod('post')) {
+            $request->validate([
+                'titol' => 'required|string|max:255',
+                'descripcio' => 'required|string',
+            ]);
+
+            $registre = new Registre();
+            $registre->campanya_id = $campanya_id;
+            $registre->titol = $request->titol;
+            $registre->descripcio = $request->descripcio;
+            $registre->save();
+
+            return redirect()->route('campanya.show', $campanya_id)
+                ->with('status', 'Nou registre creat!');
+        }
+
+        // Si es GET, mostrar el formulario vacío
+        $registre = new Registre();
+        return view('registre.edit', [
+            'registre' => $registre,
+            'campanya_id' => $campanya_id,
+            'byCampanya' => true,
         ]);
     }
 }
