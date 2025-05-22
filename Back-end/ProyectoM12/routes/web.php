@@ -10,6 +10,8 @@ use App\Http\Controllers\EsdevenimentController;
 use App\Http\Controllers\PersonatgeController;
 use App\Http\Controllers\RazaController;
 use App\Http\Controllers\ManualController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
 
 
 // Route::get('/', function () {
@@ -78,8 +80,11 @@ Route::resource('personatges', PersonatgeController::class)
 Route::resource('razas', RazaController::class);
 
 // EVENTS
-Route::get('/events', [App\Http\Controllers\EventController::class, 'index'])->name('events.index');
+Route::get('/events', [EventController::class, 'index'])->name('events.index');
 
+// USERS
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::match(['get', 'post'], '/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
 
 require __DIR__.'/auth.php';
  
