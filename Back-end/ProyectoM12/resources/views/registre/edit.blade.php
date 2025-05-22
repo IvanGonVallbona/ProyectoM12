@@ -3,6 +3,7 @@
 @section('title', 'Editar Registre')
 
 @section('content')
+
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -12,7 +13,25 @@
                 <div class="card-body">
                     <a href="{{ route('registre_list') }}" class="btn btn-secondary mb-3">&laquo; Torna</a>
                     
-                    <form method="POST" action="{{ route('registre_edit', ['id' => $registre->id]) }}" class="w-75 mx-auto">
+                    <!-- 
+                        Primero mira si el registre es de una campanya o no mediante la variable $byCampanya.
+                        Si es de una campanya, entonces mira si el registre ya existe o no.
+                            Si existe, entonces se edita el registre de la campanya.
+                            Si no existe, entonces se crea un nou registre de la campanya.
+                        Si no es de una campanya, entonces se edita el registre normal.
+                    -->
+                    <form method="POST"
+                        action="@if(isset($byCampanya) && $byCampanya)
+                                
+                                    @if(isset($registre->id) && $registre->id)
+                                        {{ route('registre_edit_by_campanya', ['campanya_id' => $campanya_id, 'registre_id' => $registre->id]) }}
+                                    @else
+                                        {{ route('registre_new_by_campanya', ['campanya_id' => $campanya_id]) }}
+                                    @endif
+                                @else
+                                    {{ route('registre_edit', ['id' => $registre->id]) }}
+                                @endif"
+                        class="w-75 mx-auto">
                         @csrf
 
                         <div class="mb-3">

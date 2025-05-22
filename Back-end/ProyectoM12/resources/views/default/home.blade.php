@@ -15,11 +15,9 @@
         <div class="col-md-6">
             <div class="card shadow-sm welcome-card">
                 <div class="card-body">
-                    <h2>¿Quiénes somos?</h2>
+                    <h2>Qui som?</h2>
                     <p class="card-text">
-                        Bienvenidos a la página web de gestión del club de rol. Desde aquí podrás consultar diversos
-                        manuales de los juegos que podrás disfrutar en nuestro club, aprendiendo un poco de su historia y su
-                        jugabilidad. También podrás crear y visualizar tus personajes además de añadirlos a campañas creadas por los Dungeon Masters y donde podrás examinar los registros de cada sesión de juego para recordar los hechos acontecidos en sesiones anteriores. 
+                       Benvinguts a la pàgina web de gestió del club de rol. Des d'aquí podràs consultar diversos manuals dels jocs que podràs gaudir al nostre club, aprenent una mica de la seva història i de la seva jugabilitat. També podràs crear i visualitzar els teus personatges, a més d'afegir-los a campanyes creades pels Dungeon Masters, on podràs examinar els registres de cada sessió de joc per recordar els fets ocorreguts en sessions anteriors.
                     </p>
                 </div>
             </div>
@@ -27,8 +25,8 @@
         <div class="col-md-6">
             <div class="card shadow-sm welcome-card">
                 <div class="card-body">
-                    <h2>¿Dónde estamos?</h2>
-                    <p>Esta es nuestra ubicación en Google Maps para que tu travesía hasta nosotros sea más sencilla:</p>
+                    <h2>On trobar-nos?</h2>
+                    <p>Aquesta és la nostra ubicació a Google Maps perquè la teva travessia fins a nosaltres sigui més senzilla:</p>
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2983.3559923410576!2d2.2858206!3d41.604813!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4c7c685a4c42f%3A0xb5c5f7b16ff5e21!2sHomoLudicus%20Granollers!5e0!3m2!1ses!2ses!4v1747241025869!5m2!1ses!2ses"
                         width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"

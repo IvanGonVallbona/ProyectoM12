@@ -51,10 +51,19 @@ VISTA DE CAMPANYA INDIVIDUAL
                 <div class="card-header">El teu Personatge</div>
                 <div class="card-body">
                     @if($miPersonatge)
-                        <p><strong>Nom:</strong> {{ $miPersonatge->nom }}</p>
-                        <p><strong>Classe:</strong> {{ $miPersonatge->classe->nom ?? '-' }}</p>
-                        <p><strong>Raza:</strong> {{ $miPersonatge->raza->nom ?? '-' }}</p>
-                        <p><strong>Nivell:</strong> {{ $miPersonatge->nivell }}</p>
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <p><strong>Nom:</strong> {{ $miPersonatge->nom }}</p>
+                                <p><strong>Classe:</strong> {{ $miPersonatge->classe->nom ?? '-' }}</p>
+                                <p><strong>Raza:</strong> {{ $miPersonatge->raza->nom ?? '-' }}</p>
+                                <p><strong>Nivell:</strong> {{ $miPersonatge->nivell }}</p>
+                            </div>
+                            <div class="col-6 text-end">
+                                @if($miPersonatge->imatge)
+                                    <img src="{{ asset('uploads/personatges/' . basename($miPersonatge->imatge)) }}" alt="Imatge de {{ $miPersonatge->nom }}" class="img-fluid mb-2">
+                                @endif
+                            </div>
+                        </div>
                     @else
                         <div class="alert alert-info">No tens cap personatge en aquesta campanya.</div>
                     @endif
@@ -63,15 +72,21 @@ VISTA DE CAMPANYA INDIVIDUAL
         </div>
         <div class="col-md-6">
             <div class="card mb-4">
-                @php
-                    $registre = $campanya->registres->first();
-                @endphp
-                @if($registre)
-                    <div class="card-header">
-                        {{ $registre->titol ?? 'Registre de la Campanya' }}
+                @if($campanya->registres->count() > 0)
+                    <div class="card-header bg-primary text-white">
+                        Registre de <b>{{ $campanya->nom }}</b>
                     </div>
-                    <div class="card-body">
-                        <p>{{ $registre->descripcio }}</p>
+                    <div class="card-body p-0">
+                        @forelse($campanya->registres as $registre)
+                            <div class="border-bottom p-3">
+                                <h5 class="mb-2">{{ $registre->titol }}</h5>
+                                <p>{{ $registre->descripcio }}</p>
+                            </div>
+                        @empty
+                            <div class="p-3">
+                                <p>Sense registres.</p>
+                            </div>
+                        @endforelse
                     </div>
                 @else
                     <div class="card-body">
@@ -91,7 +106,10 @@ VISTA DE CAMPANYA INDIVIDUAL
                     @forelse($personatges as $personatge)
                         <div class="col-md-4 mb-3">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body text-center">
+                                    @if($personatge->imatge)
+                                        <img src="{{ asset('uploads/personatges/' . basename($personatge->imatge)) }}" alt="Imatge de {{ $personatge->nom }}" class="img-fluid mb-2">
+                                    @endif
                                     <h5>{{ $personatge->nom }}</h5>
                                     <p><strong>Classe:</strong> {{ $personatge->classe->nom ?? '-' }}</p>
                                     <p><strong>Raza:</strong> {{ $personatge->raza->nom ?? '-' }}</p>
@@ -112,32 +130,35 @@ VISTA DE CAMPANYA INDIVIDUAL
             </div>
         </div>
         
-        <div class="card mb-4">
-            @php
-                $registre = $campanya->registres->first();
-            @endphp
-            @if($registre)
-            <div class="card-header">
-                {{ $registre->titol ?? 'Registre de la Campanya' }}
+        @if(Auth::id() === $campanya->user_id)
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    Registre de <b>{{ $campanya->nom }}<b>
+                </div>
+                <div class="card-body p-0">
+                    @forelse($campanya->registres as $registre)
+                        <div class="border-bottom p-3">
+                            <h5 class="mb-2">{{ $registre->titol }}</h5>
+                            <p>{{ $registre->descripcio }}</p>
+                            <a href="{{ route('registre_edit_by_campanya', ['campanya_id' => $campanya->id, 'registre_id' => $registre->id]) }}" class="btn btn-warning btn-sm">Editar</a>
+                            <form action="{{ route('registre_delete', $registre->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="byCampanya" value="1">
+                                <button class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                        </div>
+                    @empty
+                        <div class="p-3">
+                            <p>Sense registres.</p>
+                        </div>
+                    @endforelse
+                </div>
+                <div class="card-footer">
+                    <a href="{{ route('registre_new_by_campanya', ['campanya_id' => $campanya->id]) }}" class="btn btn-success btn-sm">Afegir nou registre</a>
+                </div>
             </div>
-            <div class="card-body">
-                @if($registre)
-                    <p>{{ $registre->descripcio }}</p>
-                @else
-                    <p>Sense registre.</p>
-                @endif
-                <a href="{{ route('registre_edit_by_campanya', ['campanya_id' => $campanya->id]) }}" class="btn btn-warning btn-sm">Editar Sessió</a>
-                @if($registre)
-                    <form action="{{ route('registre_delete', $registre->id) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger btn-sm">Eliminar Registre</button>
-                    </form>
-                @endif
-            </div>
-            @endif
-            </div>
-        </div>
+        @endif
     @endif
 
     
