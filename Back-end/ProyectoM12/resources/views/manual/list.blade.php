@@ -73,7 +73,6 @@
                     </div>
                 </div>
             @else
-                {{-- Vista para user, dm o qualsevol visitante --}}
                 <div class="card shadow-sm rounded">
                     <div class="card-header bg-primary text-white text-center">
                         <h3 class="mb-0">Llistat de manuals</h3>

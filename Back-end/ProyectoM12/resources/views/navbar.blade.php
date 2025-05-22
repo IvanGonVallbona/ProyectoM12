@@ -7,20 +7,19 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
+                
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('campanyes*') ? 'active' : '' }}" href="{{ route('campanya_list') }}">Campanyes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('personatges*') ? 'active' : '' }}" href="{{ route('personatges.index') }}">Personatges</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('events') ? 'active' : '' }}" href="{{ route('events.index') }}">Events</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('manual_list') }} ">Manuals</a>
+                    <a class="nav-link {{ request()->is('manual*') ? 'active' : '' }}" href="{{ route('manual_list') }} ">Manuals</a>
                 </li>
                 
                 @auth
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('campanyes*') ? 'active' : '' }}" href="{{ route('campanya_list') }}">Campanyes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('personatges*') ? 'active' : '' }}" href="{{ route('personatges.index') }}">Personatges</a>
+                    </li>
+                    
                     @if(Auth::user()->tipus_usuari === 'admin')
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('esdeveniments*') ? 'active' : '' }}" href="{{ route('esdeveniments.index') }}">Esdeveniments</a>
@@ -34,7 +33,12 @@
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('raza*') ? 'active' : '' }}" href="{{ route('razas.index') }}">Razas</a>
                         </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('events') ? 'active' : '' }}" href="{{ route('events.index') }}">Events</a>
+                        </li>
                     @endif
+
                 @endauth
 
             </ul>

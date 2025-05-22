@@ -8,6 +8,9 @@ use App\Models\Manual;
 
 class ClasseController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+    }
     public function list()
     {
         $classes = Classe::with('manual')->get();
