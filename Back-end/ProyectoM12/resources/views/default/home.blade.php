@@ -36,6 +36,7 @@
         </div>
     </div>
     @guest
+    <!-- pop up, si no estas logueado salta -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -53,21 +54,14 @@
         </div>
       </div>
     </div>
+    
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
         loginModal.show();
       });
     </script>
-    <script>
-document.addEventListener('DOMContentLoaded', function () {
-    var logo = document.getElementById('logoAnim');
-    // Reinicia la animación
-    logo.style.animation = 'none';
-    logo.offsetHeight; // Trigger reflow
-    logo.style.animation = null;
-});
-</script>
+
     @endguest
    <footer class="bg-dark text-white text-center py-3 mt-5" style="position:fixed; left:0; bottom:0; width:100%; z-index:1030;">
     Contacte: 

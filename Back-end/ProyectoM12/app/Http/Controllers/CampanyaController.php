@@ -21,7 +21,6 @@ class CampanyaController extends Controller
         if ($user->tipus_usuari === 'admin') {
             $manuals = Manual::all();
             $joc_id = $request->input('joc_id');
-            // Admin: ve todas las campañas, con filtro por joc si aplica
             [$campanyes, $joc_id] = $this->filtraPerJoc(Campanya::class, $request);
 
             return view('campanya.list', [
@@ -62,10 +61,9 @@ class CampanyaController extends Controller
                 'estat' => 'required|string|max:100',
                 'joc_id' => 'required|exists:manuals,id',
                 'personatges' => 'required|integer|min:3|max:6',
-                'classe_*' => 'nullable|exists:classes,id', // Se permite null
+                'classe_*' => 'nullable|exists:classes,id',
             ]);
 
-            // Crear la campanya
             $campanya = new Campanya();
             $campanya->nom = $request->nom;
             $campanya->descripcio = $request->descripcio;
@@ -81,7 +79,6 @@ class CampanyaController extends Controller
                 
                 // Si la opció està buida, guardem NULL explícitament
                 if ($classeId === null) {
-                    // Inserción directa con DB para asegurar que se guarde NULL
                     // Inserció directa amb la BBDD per a que es guardi null
                     DB::table('classe_campanya')->insert([
                         'campanya_id' => $campanya->id,
@@ -150,7 +147,6 @@ class CampanyaController extends Controller
         $manuals = Manual::all();
         $classes = Classe::all();
 
-        // 🔄 Recuperar totes les classes assignades a la campanya, inclosos nulls
         $classesAssignades = DB::table('classe_campanya')
             ->where('campanya_id', $campanya->id)
             ->pluck('classe_id')

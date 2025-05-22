@@ -3,7 +3,6 @@
 @section('content')
 <div class="container py-5">
     @auth
-        {{-- Esdeveniments futurs --}}
         <div class="mb-5">
             <h3 class="mb-4 text-info">Esdeveniments futurs al local</h3>
             <div class="row">
@@ -48,7 +47,7 @@
             </div>
         </div>
 
-        {{-- Campanyes disponibles --}}
+        
         <div>
             <h3 class="mb-4 text-info">Campanyes disponibles</h3>
             <div class="row">
