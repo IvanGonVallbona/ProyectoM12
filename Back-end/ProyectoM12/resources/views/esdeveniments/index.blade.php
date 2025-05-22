@@ -25,64 +25,66 @@
                     @endif
 
                     @if(count($esdeveniments) > 0)
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th scope="col">Nom</th>
-                                    <th scope="col">Descripció</th>
-                                    <th scope="col">Data</th>
-                                    <th scope="col">Tipus</th>
-                                    <th scope="col">Participants</th>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Descripció</th>
+                                        <th scope="col">Data</th>
+                                        <th scope="col">Tipus</th>
+                                        <th scope="col">Participants</th>
 
-                                    @if (Auth::user() && Auth::user()->tipus_usuari === 'admin' || Auth::user()->tipus_usuari === 'dm')
-                                    <th scope="col">Accions</th>
-                                    @endif
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($esdeveniments as $esdeveniment)
-                                <tr>
-                                    <td>{{ $esdeveniment->nom }}</td>
-                                    <td>{{ $esdeveniment->descripcio }}</td>
-                                    <td>{{ $esdeveniment->data->format('d/m/Y') }}</td>
-                                    <td>{{ $esdeveniment->tipus }}</td>
-                                    <td>{{ $esdeveniment->participants->count() }} inscrits</td>
+                                        @if (Auth::user() && Auth::user()->tipus_usuari === 'admin' || Auth::user()->tipus_usuari === 'dm')
+                                        <th scope="col">Accions</th>
+                                        @endif
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($esdeveniments as $esdeveniment)
+                                    <tr>
+                                        <td>{{ $esdeveniment->nom }}</td>
+                                        <td>{{ $esdeveniment->descripcio }}</td>
+                                        <td>{{ $esdeveniment->data->format('d/m/Y') }}</td>
+                                        <td>{{ $esdeveniment->tipus }}</td>
+                                        <td>{{ $esdeveniment->participants->count() }} inscrits</td>
 
-                                    @if (Auth::user() && Auth::user()->tipus_usuari === 'admin' || Auth::user()->tipus_usuari === 'dm')
-                                    
-                                    <td class="d-flex justify-content-around">
-                                        <a href="{{ route('esdeveniments.edit', $esdeveniment->id) }}" class="btn btn-warning btn-sm m-1">
-                                            <i class="fa fa-edit"></i> Editar
-                                        </a>
-                                        <form action="{{ route('esdeveniments.destroy', $esdeveniment->id) }}" method="POST" 
-                                            onsubmit="return confirm('Estàs segur que vols eliminar aquest esdeveniment?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm m-1">
-                                                <i class="fa fa-trash"></i> Eliminar
-                                            </button>
-                                        </form>
-                                        @auth
-                                            @if(!$esdeveniment->participants->contains(auth()->user()->id))
-                                                <form action="{{ route('esdeveniments.inscriureUsuari', $esdeveniment->id) }}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                                                    <button type="submit" class="btn btn-primary mt-2">Inscriure's</button>
-                                                </form>
-                                            @else
-                                                <form action="{{ route('esdeveniments.desinscriureUsuari', $esdeveniment->id) }}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                                                    <button type="submit" class="btn btn-secondary mt-2">Desinscriure's</button>
-                                                </form>
-                                            @endif
-                                        @endauth
-                                    </td>
-                                    @endif
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                        @if (Auth::user() && Auth::user()->tipus_usuari === 'admin' || Auth::user()->tipus_usuari === 'dm')
+                                        
+                                        <td class="d-flex justify-content-around">
+                                            <a href="{{ route('esdeveniments.edit', $esdeveniment->id) }}" class="btn btn-warning btn-sm m-1">
+                                                <i class="fa fa-edit"></i> Editar
+                                            </a>
+                                            <form action="{{ route('esdeveniments.destroy', $esdeveniment->id) }}" method="POST" 
+                                                onsubmit="return confirm('Estàs segur que vols eliminar aquest esdeveniment?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm m-1">
+                                                    <i class="fa fa-trash"></i> Eliminar
+                                                </button>
+                                            </form>
+                                            @auth
+                                                @if(!$esdeveniment->participants->contains(auth()->user()->id))
+                                                    <form action="{{ route('esdeveniments.inscriureUsuari', $esdeveniment->id) }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                                        <button type="submit" class="btn btn-primary mt-2">Inscriure's</button>
+                                                    </form>
+                                                @else
+                                                    <form action="{{ route('esdeveniments.desinscriureUsuari', $esdeveniment->id) }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                                        <button type="submit" class="btn btn-secondary mt-2">Desinscriure's</button>
+                                                    </form>
+                                                @endif
+                                            @endauth
+                                        </td>
+                                        @endif
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     @else
                         <div class="alert alert-info">
                             No hi ha esdeveniments registrats. <a href="{{ route('esdeveniments.create') }}">Crear un nou esdeveniment</a>
