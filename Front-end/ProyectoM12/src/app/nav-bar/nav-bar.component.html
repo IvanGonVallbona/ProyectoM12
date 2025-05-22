@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark" aria-label="Second navbar example">
+    <div class="container-fluid">
+        <img class="logoNavBar" src="assets/logo_bueno.png" alt="Logo de la aplicación">
+        <a class="navbar-brand" href="#">Rol Lobby</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02"
+            aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample02">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['welcome']" routerLinkActive="active"
+                        aria-current="page">Inici</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['classe-list']" routerLinkActive="active">Classes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['manual-list']" routerLinkActive="active">Manuals</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['raza-list']" routerLinkActive="active">Races</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['campanya-list']" routerLinkActive="active">Campanyes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['personatge-list']" routerLinkActive="active">Personatges</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['registre-list']" routerLinkActive="active">Registres</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

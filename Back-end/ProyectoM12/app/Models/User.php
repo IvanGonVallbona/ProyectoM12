@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'tipus_usuari',
     ];
 
     /**
@@ -44,5 +45,25 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function personatges()
+    {
+        return $this->hasMany(Personatge::class);
+    }
+
+    public function campanyes()
+    {
+        return $this->hasMany(Campanya::class);
+    }
+
+    public function esdeveniments()
+    {
+        return $this->hasMany(Esdeveniment::class);
+    }
+
+    public function esdevenimentsUser()
+    {
+        return $this->belongsToMany(Esdeveniment::class, 'esdeveniment_user');
     }
 }

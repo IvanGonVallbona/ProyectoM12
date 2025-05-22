@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('personatges', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('nom');
-            $table->string('raza');
             $table->integer('nivell');
             $table->foreignId('classe_id')->constrained('classes')->onDelete('cascade');
+            $table->foreignId('raza_id')->constrained('razas')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('campanya_id')->constrained('campanyes')->onDelete('cascade');
+            $table->foreignId('campanya_id')->nullable()->constrained('campanyes')->onDelete('cascade');
+            $table->foreignId('joc_id')->constrained('manuals')->onDelete('cascade');
+            $table->string('imatge')->nullable();
+            $table->timestamps();
         });
     }
 
