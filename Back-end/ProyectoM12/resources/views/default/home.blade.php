@@ -8,7 +8,7 @@
 
 @section('content')
      <div class="welcome-header d-flex flex-column align-items-center justify-content-center mt-4">
-        <img src="{{ asset('img/logo.png') }}" alt="Logo">
+        <img src="{{ asset('img/logo.png') }}" alt="Logo" class="logo-anim">
         <h1 class="mb-0">Rol Lobby</h1>
     </div>
     <div class="row justify-content-center mt-5">
@@ -36,7 +36,6 @@
         </div>
     </div>
     @guest
-    <!-- Modal Bootstrap -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -60,5 +59,20 @@
         loginModal.show();
       });
     </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    var logo = document.getElementById('logoAnim');
+    // Reinicia la animación
+    logo.style.animation = 'none';
+    logo.offsetHeight; // Trigger reflow
+    logo.style.animation = null;
+});
+</script>
     @endguest
+    <footer class="bg-dark text-white text-center py-3 mt-5" style="position:fixed; left:0; bottom:0; width:100%; z-index:1030;">
+    Contacte: 
+    <a href="mailto:genis_manuelferran@iescarlesvallbona.cat" class="text-white text-decoration-underline">genis_manuelferran@iescarlesvallbona.cat</a>
+    &nbsp;|&nbsp;
+    <a href="mailto:ivan_gonzalezparra@iescarlesvallbona.cat" class="text-white text-decoration-underline">ivan_gonzalezparra@iescarlesvallbona.cat</a>
+</footer>
 @endsection
