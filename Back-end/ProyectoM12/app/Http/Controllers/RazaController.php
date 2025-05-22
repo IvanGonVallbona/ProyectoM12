@@ -12,10 +12,11 @@ class RazaController extends Controller
         $this->middleware('auth');
     }
     
-    public function index()
+    public function index(Request $request)
     {
-        $razas = Raza::with('manual')->get();
-        return view('razas.index', compact('razas'));
+        $manuals = Manual::all();
+        [$razas, $joc_id] = $this->filtraPerJoc(Raza::class, $request);
+        return view('razas.index', compact('razas', 'manuals', 'joc_id'));
     }
 
     public function create()

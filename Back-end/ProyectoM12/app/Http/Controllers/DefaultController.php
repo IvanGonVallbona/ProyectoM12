@@ -10,4 +10,6 @@ class DefaultController extends Controller
     { 
       return view('default.home');
     }
+
+    
 }

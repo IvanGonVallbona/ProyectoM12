@@ -11,10 +11,11 @@ class ClasseController extends Controller
     public function __construct(){
         $this->middleware('auth');
     }
-    public function list()
+    public function list(Request $request)
     {
-        $classes = Classe::with('manual')->get();
-        return view('classe.list', compact('classes'));
+        $manuals = Manual::all();
+        [$classes, $joc_id] = $this->filtraPerJoc(Classe::class, $request);
+        return view('classe.list', compact('classes', 'manuals', 'joc_id'));
     }
 
     public function new(Request $request)
