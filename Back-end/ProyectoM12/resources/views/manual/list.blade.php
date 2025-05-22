@@ -8,7 +8,6 @@
                 $user = Auth::user();
             @endphp
 
-            {{-- Vista per admin --}}
             @if ($user && $user->tipus_usuari === 'admin')
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
@@ -93,6 +92,7 @@
                                                 <h5 class="card-title">{{ $manual->nom }}</h5>
                                                 <h6 class="card-subtitle mb-2 text-muted">{{ $manual->tipus }}</h6>
                                                 <p class="card-text flex-grow-1">
+                                                    <!-- Si la descripcio te mes de 80 caracters, el limita i mostra un boto de llegir mes per a expandir-la -->
                                                     <span id="desc-short-{{ $manual->id }}">
                                                         {{ Str::limit($manual->descripcio, 80) }}
                                                         @if(strlen($manual->descripcio) > 80)

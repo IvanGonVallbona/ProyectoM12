@@ -7,9 +7,7 @@
         <div class="col-md-10">
             <div class="card shadow">
                 <div class="card-body">
-                    <!-- Título arriba -->
                     <h2 class="card-title text-center mb-4">{{ $manual->nom }}</h2>
-                    <!-- Tipo/Jugabilidad izquierda, Imagen derecha -->
                     <div class="row align-items-center mb-4">
                         <div class="col-md-6">
                             <h5 class="card-subtitle mb-2 text-muted">Tipus: {{ $manual->tipus }}</h5>
@@ -21,13 +19,11 @@
                             @endif
                         </div>
                     </div>
-                    <!-- Descripción abajo -->
                     <div class="mb-4">
                         <h5>Descripció</h5>
                         <p class="card-text">{{ $manual->descripcio }}</p>
                     </div>
                     <hr>
-                    <!-- Clases asociadas -->
                     <h4>Classes associades</h4>
                     @if($classes->count())
                         <ul>
@@ -38,7 +34,6 @@
                     @else
                         <p class="text-muted">No hay clases asociadas a este manual.</p>
                     @endif
-                    <!-- Razas asociadas -->
                     <h4>Races associades</h4>
                     @if($razas->count())
                         <ul>

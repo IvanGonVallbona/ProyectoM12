@@ -35,7 +35,7 @@ class PersonatgeController extends Controller
         $manuals = Manual::all();
         $classes = Classe::all();
         $razas = Raza::all();
-        $manuals = \App\Models\Manual::all(); 
+        $manuals = Manual::all(); 
         
         return view('personatges.create', [
             'jocs' => $manuals,
@@ -96,7 +96,7 @@ class PersonatgeController extends Controller
         $manuals = Manual::all();
         $classes = Classe::all();
         $razas = Raza::all();
-        $manuals = \App\Models\Manual::all(); 
+        $manuals = Manual::all(); 
 
         return view('personatges.edit', [
             'jocs' => $manuals,
