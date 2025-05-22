@@ -69,10 +69,10 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
     @endguest
-    <footer class="bg-dark text-white text-center py-3 mt-5" style="position:fixed; left:0; bottom:0; width:100%; z-index:1030;">
+   <footer class="bg-dark text-white text-center py-3 mt-5" style="position:fixed; left:0; bottom:0; width:100%; z-index:1030;">
     Contacte: 
-    <a href="mailto:genis_manuelferran@iescarlesvallbona.cat" class="text-white text-decoration-underline">genis_manuelferran@iescarlesvallbona.cat</a>
+    <a href="mailto:genis_manuelferran@iescarlesvallbona.cat" class="text-white text-decoration-none">genis_manuelferran@iescarlesvallbona.cat</a>
     &nbsp;|&nbsp;
-    <a href="mailto:ivan_gonzalezparra@iescarlesvallbona.cat" class="text-white text-decoration-underline">ivan_gonzalezparra@iescarlesvallbona.cat</a>
+    <a href="mailto:ivan_gonzalezparra@iescarlesvallbona.cat" class="text-white text-decoration-none">ivan_gonzalezparra@iescarlesvallbona.cat</a>
 </footer>
 @endsection
