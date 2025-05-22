@@ -79,7 +79,10 @@
                                     <div class="col-12 col-sm-6 col-lg-4 mb-4">
                                         <div class="card h-100">
                                             @if($personatge->imatge)
-                                                <img src="{{ $personatge->imatge }}" class="card-img-top" alt="{{ $personatge->nom }}" style="max-height: 200px; object-fit: cover;">
+                                                <img src="{{ asset($personatge->imatge) }}"
+                                                    alt="{{ $personatge->nom }}"
+                                                    class="img-fluid mx-auto d-block"
+                                                    style="max-height: 300px; object-fit: contain;">
                                             @endif
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ $personatge->nom }}</h5>
