@@ -33,6 +33,7 @@
                                     <th scope="col">Data</th>
                                     <th scope="col">Tipus</th>
                                     <th scope="col">Participants</th>
+                                    <th scope="col">Email Participants</th>
 
                                     @if (Auth::user() && Auth::user()->tipus_usuari === 'admin' || Auth::user()->tipus_usuari === 'dm')
                                     <th scope="col">Accions</th>
@@ -47,6 +48,15 @@
                                     <td>{{ $esdeveniment->data->format('d/m/Y') }}</td>
                                     <td>{{ $esdeveniment->tipus }}</td>
                                     <td>{{ $esdeveniment->participants->count() }} inscrits</td>
+                                   <td>
+                                        @if($esdeveniment->participants->count())
+                                            @foreach($esdeveniment->participants as $participant)
+                                            <div>{{ $participant->email }}</div>
+                                            @endforeach
+                                        @else
+                                        <span class="text-muted">Sense participants</span>
+                                        @endif
+                                    </td>
 
                                     @if (Auth::user() && Auth::user()->tipus_usuari === 'admin' || Auth::user()->tipus_usuari === 'dm')
                                     
