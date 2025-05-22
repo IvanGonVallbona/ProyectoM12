@@ -113,6 +113,14 @@
                                 <a href="{{ route('campanya.show', $campanya->id) }}" class="btn btn-info btn-sm">Veure Campanya</a>
                                 @if(Auth::id() == $campanya->user_id)
                                     <a href="{{ route('campanya_edit', $campanya->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                    <form action="{{ route('campanya_delete', $campanya->id) }}" method="POST" 
+                                        onsubmit="return confirm('Estàs segur que vols eliminar aquesta campanya?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fa fa-trash"></i> Eliminar
+                                        </button>
+                                    </form>
                                 @endif
                             </div>
                         </div>
