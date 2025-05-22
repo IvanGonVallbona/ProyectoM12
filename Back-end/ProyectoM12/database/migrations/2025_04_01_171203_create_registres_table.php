@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('registres', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('titol');
             $table->longText('descripcio');
             $table->foreignId('campanya_id')->constrained('campanyes')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

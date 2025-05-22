@@ -22,11 +22,12 @@ class PersonatgeController extends Controller
         $this->middleware('auth');
     }
 
-
-    public function index()
+    public function index(Request $request)
     {
-        $personatges = Personatge::with(['classe', 'raza', 'manual'])->get();
-        return view('personatges.index', compact('personatges'));
+        $manuals = Manual::all();
+        [$personatges, $joc_id] = $this->filtraPerJoc(Personatge::class, $request);
+
+        return view('personatges.index', compact('personatges', 'manuals', 'joc_id'));
     }
 
     public function create()

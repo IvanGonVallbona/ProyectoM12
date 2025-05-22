@@ -8,6 +8,20 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <span>Llista de Personatges</span>
+                        <div class="d-flex align-items-center">
+                            <span class="me-2 fw-bold">Filtrar per joc:</span>
+                            <form method="GET" action="{{ route('personatges.index') }}" class="d-flex align-items-center">
+                                <select name="joc_id" class="form-select form-select-sm me-2" onchange="this.form.submit()">
+                                    <option value="">Tots els jocs</option>
+                                    @foreach($manuals as $manual)
+                                        <option value="{{ $manual->id }}" {{ (isset($joc_id) && $joc_id == $manual->id) ? 'selected' : '' }}>
+                                            {{ $manual->nom }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <noscript><button type="submit" class="btn btn-sm btn-secondary">Filtrar</button></noscript>
+                            </form>
+                        </div>
                         <a href="{{ route('personatges.create') }}" class="btn btn-primary btn-sm">Nou Personatge</a>
                     </div>
                     <div class="card-body">

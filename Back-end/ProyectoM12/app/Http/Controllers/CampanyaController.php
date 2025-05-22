@@ -6,10 +6,9 @@ use App\Models\Classe;
 use App\Models\Manual;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
 class CampanyaController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
         $user = Auth::user();
 
@@ -18,12 +17,18 @@ class CampanyaController extends Controller
                 ->with('error', "Has d'iniciar sessió per veure les campanyes.");
         }
 
+        
         if ($user->tipus_usuari === 'admin') {
-            // Admin: ve todas las campañas
-            $campanyes = Campanya::with(['user', 'manual'])->get();
+            $manuals = Manual::all();
+            $joc_id = $request->input('joc_id');
+            // Admin: ve todas las campañas, con filtro por joc si aplica
+            [$campanyes, $joc_id] = $this->filtraPerJoc(Campanya::class, $request);
+
             return view('campanya.list', [
                 'campanyes' => $campanyes,
                 'campanyesPropies' => collect(), // vacío para evitar errores en la vista
+                'manuals' => $manuals,
+                'joc_id' => $joc_id,
             ]);
         } else {
             // DM o usuario normal: solo campañas donde participa (como DM o jugador)
