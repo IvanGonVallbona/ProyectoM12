@@ -8,7 +8,7 @@
             <h3 class="mb-4 text-info">Esdeveniments futurs al local</h3>
             <div class="row">
                 @forelse($esdeveniments as $esdeveniment)
-                    <div class="col-md-4 mb-4">
+                    <div class="col-12 col-sm-6 col-lg-4 mb-4">
                         <div class="card h-100 border-info">
                             <div class="card-header bg-info text-white">
                                 <strong>{{ $esdeveniment->nom }}</strong>
@@ -53,7 +53,7 @@
             <h3 class="mb-4 text-info">Campanyes disponibles</h3>
             <div class="row">
                 @forelse($campanyes as $campanya)
-                    <div class="col-md-4 mb-4">
+                    <div class="col-12 col-sm-6 col-lg-4 mb-4">
                         <div class="card h-100 border-info">
                             <div class="card-header bg-info text-white">
                                 <strong>{{ $campanya->nom }}</strong>

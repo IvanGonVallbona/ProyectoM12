@@ -24,45 +24,47 @@
                         </div>
                     @endif
                     @if(count($registres) > 0)
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Títol</th>
-                                    <th scope="col">Descripció</th>
-                                    <th scope="col">Data de creació</th>
-                                    @if (Auth::user() && Auth::user()->tipus_usuari === 'dm')
-                                        <th scope="col">Accions</th>
-                                    @endif
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($registres as $registre)
-                                <tr>
-                                    <th scope="row">{{ $registre->id }}</th>
-                                    <td>{{ $registre->titol }}</td>
-                                    <td>{{ Str::limit($registre->descripcio, 100) }}</td>
-                                    <td>{{ $registre->created_at->format('d/m/Y H:i') }}</td>
-                                    @if (Auth::user() && Auth::user()->tipus_usuari === 'dm')
-                                    <td class="d-flex justify-content-around">
-                                        <a href="{{ route('registre_edit', $registre->id) }}" class="btn btn-warning btn-sm me-2">
-                                            <i class="fa fa-edit"></i> Editar
-                                        </a>
-                                        
-                                        <form action="{{ route('registre_delete', $registre->id) }}" method="POST" 
-                                              onsubmit="return confirm('Estàs segur que vols eliminar aquest registre?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fa fa-trash"></i> Eliminar
-                                            </button>
-                                        </form>
-                                    </td>
-                                    @endif
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Títol</th>
+                                        <th scope="col">Descripció</th>
+                                        <th scope="col">Data de creació</th>
+                                        @if (Auth::user() && Auth::user()->tipus_usuari === 'dm')
+                                            <th scope="col">Accions</th>
+                                        @endif
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($registres as $registre)
+                                    <tr>
+                                        <th scope="row">{{ $registre->id }}</th>
+                                        <td>{{ $registre->titol }}</td>
+                                        <td>{{ Str::limit($registre->descripcio, 100) }}</td>
+                                        <td>{{ $registre->created_at->format('d/m/Y H:i') }}</td>
+                                        @if (Auth::user() && Auth::user()->tipus_usuari === 'dm')
+                                        <td class="d-flex justify-content-around">
+                                            <a href="{{ route('registre_edit', $registre->id) }}" class="btn btn-warning btn-sm me-2">
+                                                <i class="fa fa-edit"></i> Editar
+                                            </a>
+                                            
+                                            <form action="{{ route('registre_delete', $registre->id) }}" method="POST" 
+                                                onsubmit="return confirm('Estàs segur que vols eliminar aquest registre?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fa fa-trash"></i> Eliminar
+                                                </button>
+                                            </form>
+                                        </td>
+                                        @endif
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     @else
                         <div class="alert alert-info">
                             No hi ha registres. <a href="{{ route('registre_new') }}">Crear un nou registre</a>
