@@ -35,4 +35,30 @@
             </div>
         </div>
     </div>
+    @guest
+    <!-- Modal Bootstrap -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Atenció</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tancar"></button>
+          </div>
+          <div class="modal-body text-center">
+            Per veure més opcions, inicia sessió
+          </div>
+          <div class="modal-footer">
+            <a href="{{ route('login') }}" class="btn btn-primary">Inicia sessió</a>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tancar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+        loginModal.show();
+      });
+    </script>
+    @endguest
 @endsection
