@@ -20,38 +20,40 @@
                             @endif
 
                             @if(count($classes) > 0)
-                                <table class="table table-bordered table-hover">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th scope="col">Nom</th>
-                                            <th scope="col">Descripció</th>
-                                            <th scope="col">Joc</th>
-                                            <th scope="col">Accions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($classes as $classe)
-                                        <tr>
-                                            <td>{{ $classe->nom }}</td>
-                                            <td>{{ $classe->descripcio }}</td>
-                                            <td>{{ $classe->manual->nom ?? 'Sense joc' }}</td>
-                                            <td class="d-flex justify-content-around">
-                                                <a href="{{ route('classe_edit', $classe->id) }}" class="btn btn-warning btn-sm">
-                                                    <i class="fa fa-edit"></i> Editar
-                                                </a>
-                                                <form action="{{ route('classe_delete', $classe->id) }}" method="POST" 
-                                                    onsubmit="return confirm('Estàs segur que vols eliminar aquesta classe?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fa fa-trash"></i> Eliminar
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th scope="col">Nom</th>
+                                                <th scope="col">Descripció</th>
+                                                <th scope="col">Joc</th>
+                                                <th scope="col">Accions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($classes as $classe)
+                                            <tr>
+                                                <td>{{ $classe->nom }}</td>
+                                                <td>{{ $classe->descripcio }}</td>
+                                                <td>{{ $classe->manual->nom ?? 'Sense joc' }}</td>
+                                                <td class="d-flex justify-content-around">
+                                                    <a href="{{ route('classe_edit', $classe->id) }}" class="btn btn-warning btn-sm">
+                                                        <i class="fa fa-edit"></i> Editar
+                                                    </a>
+                                                    <form action="{{ route('classe_delete', $classe->id) }}" method="POST" 
+                                                        onsubmit="return confirm('Estàs segur que vols eliminar aquesta classe?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                            <i class="fa fa-trash"></i> Eliminar
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             @else
                                 <div class="alert alert-info">
                                     No hi ha classes registrades. <a href="{{ route('classe_new') }}">Crear una nova classe</a>

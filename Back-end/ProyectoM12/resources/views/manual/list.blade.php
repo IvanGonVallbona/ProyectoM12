@@ -8,7 +8,7 @@
                 $user = Auth::user();
             @endphp
 
-            {{-- Vista para admin --}}
+            {{-- Vista per admin --}}
             @if ($user && $user->tipus_usuari === 'admin')
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
@@ -30,43 +30,45 @@
                         @endif
 
                         @if(count($manuals) > 0)
-                            <table class="table table-bordered table-hover">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Nom</th>
-                                        <th>Tipus</th>
-                                        <th>Descripció</th>
-                                        <th>Imatge</th>
-                                        <th>Accions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($manuals as $manual)
-                                    <tr>
-                                        <td>{{ $manual->id }}</td>
-                                        <td>{{ $manual->nom }}</td>
-                                        <td>{{ $manual->tipus }}</td>
-                                        <td>{{ Str::limit($manual->descripcio, 50) }}</td>
-                                        <td>
-                                            @if ($manual->imatge)
-                                                <img src="{{ $manual->imatge }}" alt="Foto Manual {{ $manual->nom }}" style="width: 100px;">
-                                            @else
-                                                No disponible
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('manual_edit', $manual->id) }}" class="btn btn-warning btn-sm">Editar</a>
-                                            <form action="{{ route('manual_delete', $manual->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Estàs segur que vols eliminar aquest manual?');">Eliminar</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nom</th>
+                                            <th>Tipus</th>
+                                            <th>Descripció</th>
+                                            <th>Imatge</th>
+                                            <th>Accions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($manuals as $manual)
+                                        <tr>
+                                            <td>{{ $manual->id }}</td>
+                                            <td>{{ $manual->nom }}</td>
+                                            <td>{{ $manual->tipus }}</td>
+                                            <td>{{ Str::limit($manual->descripcio, 50) }}</td>
+                                            <td>
+                                                @if ($manual->imatge)
+                                                    <img src="{{ $manual->imatge }}" alt="Foto Manual {{ $manual->nom }}" style="width: 100px;">
+                                                @else
+                                                    No disponible
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('manual_edit', $manual->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                                <form action="{{ route('manual_delete', $manual->id) }}" method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Estàs segur que vols eliminar aquest manual?');">Eliminar</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         @else
                             <p>No hi ha manuals registrats.</p>
                         @endif
@@ -85,7 +87,7 @@
                         @else
                             <div class="row">
                                 @foreach($manuals as $manual)
-                                    <div class="col-md-4 mb-4">
+                                    <div class="col-12 col-sm-6 col-lg-4 mb-4">
                                         <div class="card h-100 shadow-sm">
                                             <div class="card-body d-flex flex-column">
                                                 <h5 class="card-title">{{ $manual->nom }}</h5>
