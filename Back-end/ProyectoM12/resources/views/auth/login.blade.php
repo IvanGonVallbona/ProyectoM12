@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="flex min-h-[80vh]">
         <!-- Lado del formulario -->
-        <div class="w-full max-w-xl flex flex-col justify-center items-center bg-white shadow-lg px-12 py-10 my-auto rounded-lg">
+        <div class="w-full max-w-xl flex flex-col justify-center items-center bg-white px-12 py-10 my-auto rounded-lg">
             <!-- Logo -->
             <div class="mb-6">
                 <img src="{{ asset('img/logo.png') }}" alt="Logo" class="h-16 mx-auto" style="height:300px; width: 300px;">
