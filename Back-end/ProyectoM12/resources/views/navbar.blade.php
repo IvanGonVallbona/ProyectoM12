@@ -24,9 +24,6 @@
                             <a class="nav-link {{ request()->is('esdeveniments*') ? 'active' : '' }}" href="{{ route('esdeveniments.index') }}">Esdeveniments</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('registre*') ? 'active' : '' }}" href="{{ route('registre_list') }}">Registres</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link {{ request()->is('classe*') ? 'active' : '' }}" href="{{ route('classe_list') }}">Classes</a>
                         </li>
                         <li class="nav-item">
